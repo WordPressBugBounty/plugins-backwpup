@@ -4,20 +4,20 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542
+class ComposerStaticInitbd9daef8d5e05de248b6db9492444827
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
+        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
-        '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
+        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
         '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
-        'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
-        'decc78cc4436b1292c6c0d151b19445c' => __DIR__ . '/..' . '/phpseclib/phpseclib/phpseclib/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -597,6 +597,7 @@ class ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542
         'BackWPup\\ThirdParty\\WPOptimize' => __DIR__ . '/../..' . '/inc/ThirdParty/WPOptimize.php',
         'BackWPup\\ThirdParty\\WPRocket' => __DIR__ . '/../..' . '/inc/ThirdParty/WPRocket.php',
         'BackWPup\\ThirdParty\\WPSuperCache' => __DIR__ . '/../..' . '/inc/ThirdParty/WPSuperCache.php',
+        'BackWPup\\Utils\\BackWPupHelpers' => __DIR__ . '/../..' . '/inc/Utils/BackWPupHelpers.php',
         'BackWPup_Admin' => __DIR__ . '/../..' . '/inc/class-admin.php',
         'BackWPup_Adminbar' => __DIR__ . '/../..' . '/inc/class-adminbar.php',
         'BackWPup_Create_Archive' => __DIR__ . '/../..' . '/inc/class-create-archive.php',
@@ -638,7 +639,6 @@ class ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542
         'BackWPup_Encryption_OpenSSL' => __DIR__ . '/../..' . '/inc/class-encryption-openssl.php',
         'BackWPup_Factory_Exception' => __DIR__ . '/../..' . '/inc/class-factory-exception.php',
         'BackWPup_File' => __DIR__ . '/../..' . '/inc/class-file.php',
-        'BackWPup_Help' => __DIR__ . '/../..' . '/inc/class-help.php',
         'BackWPup_Install' => __DIR__ . '/../..' . '/inc/class-install.php',
         'BackWPup_Job' => __DIR__ . '/../..' . '/inc/class-job.php',
         'BackWPup_JobType_DBCheck' => __DIR__ . '/../..' . '/inc/class-jobtype-dbcheck.php',
@@ -648,6 +648,7 @@ class ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542
         'BackWPup_JobType_WPPlugin' => __DIR__ . '/../..' . '/inc/class-jobtype-wpplugin.php',
         'BackWPup_JobTypes' => __DIR__ . '/../..' . '/inc/class-jobtypes.php',
         'BackWPup_Message_Box' => __DIR__ . '/../..' . '/inc/class-message-box.php',
+        'BackWPup_Migrate' => __DIR__ . '/../..' . '/inc/class-migrate.php',
         'BackWPup_MySQLDump' => __DIR__ . '/../..' . '/inc/class-mysqldump.php',
         'BackWPup_MySQLDump_Exception' => __DIR__ . '/../..' . '/inc/class-mysqldump.php',
         'BackWPup_Option' => __DIR__ . '/../..' . '/inc/class-option.php',
@@ -655,8 +656,10 @@ class ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542
         'BackWPup_Page_BackWPup' => __DIR__ . '/../..' . '/inc/class-page-backwpup.php',
         'BackWPup_Page_Backups' => __DIR__ . '/../..' . '/inc/class-page-backups.php',
         'BackWPup_Page_Editjob' => __DIR__ . '/../..' . '/inc/class-page-editjob.php',
+        'BackWPup_Page_First_Backup' => __DIR__ . '/../..' . '/inc/class-page-firstbackup.php',
         'BackWPup_Page_Jobs' => __DIR__ . '/../..' . '/inc/class-page-jobs.php',
         'BackWPup_Page_Logs' => __DIR__ . '/../..' . '/inc/class-page-logs.php',
+        'BackWPup_Page_Onboarding' => __DIR__ . '/../..' . '/inc/class-page-onboarding.php',
         'BackWPup_Page_Restore' => __DIR__ . '/../..' . '/inc/class-page-restore.php',
         'BackWPup_Page_Settings' => __DIR__ . '/../..' . '/inc/class-page-settings.php',
         'BackWPup_Path_Fixer' => __DIR__ . '/../..' . '/inc/class-path-fixer.php',
@@ -667,6 +670,7 @@ class ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542
         'BackWPup_System_Tests' => __DIR__ . '/../..' . '/inc/class-system-tests.php',
         'BackWPup_System_Tests_Runner' => __DIR__ . '/../..' . '/inc/class-system-tests-runner.php',
         'BackWPup_ThirdParties' => __DIR__ . '/../..' . '/inc/class-thirdparties.php',
+        'BackWPup_WP_API' => __DIR__ . '/../..' . '/inc/class-wp-api.php',
         'BackWPup_WP_CLI' => __DIR__ . '/../..' . '/inc/class-wp-cli.php',
         'BackWpUp_Destination_Downloader_Data' => __DIR__ . '/../..' . '/inc/class-destination-downloader-data.php',
         'BackWpup_Download_Handler' => __DIR__ . '/../..' . '/inc/class-download-handler.php',
@@ -6343,6 +6347,7 @@ class ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542
         'Inpsyde\\BackWPup\\Notice\\EasycronUpdateNotice' => __DIR__ . '/../..' . '/inc/Notice/EasycronUpdateNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EnvironmentNotice' => __DIR__ . '/../..' . '/inc/Notice/EnvironmentNotice.php',
         'Inpsyde\\BackWPup\\Notice\\EvaluateNotice' => __DIR__ . '/../..' . '/inc/Notice/EvaluateNotice.php',
+        'Inpsyde\\BackWPup\\Notice\\NewUINotice' => __DIR__ . '/../..' . '/inc/Notice/NewUINotice.php',
         'Inpsyde\\BackWPup\\Notice\\Notice' => __DIR__ . '/../..' . '/inc/Notice/Notice.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeMessage' => __DIR__ . '/../..' . '/inc/Notice/NoticeMessage.php',
         'Inpsyde\\BackWPup\\Notice\\NoticeView' => __DIR__ . '/../..' . '/inc/Notice/NoticeView.php',
@@ -9913,10 +9918,10 @@ class ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit9864c52e8e2e64db56e675f7a3b14542::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitbd9daef8d5e05de248b6db9492444827::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitbd9daef8d5e05de248b6db9492444827::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitbd9daef8d5e05de248b6db9492444827::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitbd9daef8d5e05de248b6db9492444827::$classMap;
 
         }, null, ClassLoader::class);
     }
