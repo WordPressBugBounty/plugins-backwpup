@@ -1,14 +1,14 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
 /**
- * @var string $job_id Optional. The main plugin file. Default: null.
+ * @var string $fileJobId Optional. The main plugin file. Default: null.
  *
  */
-if ( ! isset($job_id) ) {
-	return;
-}
 
-$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('content',WP_CONTENT_DIR, $job_id);
+#Defaults
+$fileJobId = $fileJobId ?? null;
+
+$excludedFiles = BackWPup_Directory::get_folder_list_to_exclude('content',WP_CONTENT_DIR, $fileJobId);
 
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Others in wp-content", 'backwpup') . " - " . __("Exclusion Settings", 'backwpup'),

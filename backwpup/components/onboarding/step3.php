@@ -23,8 +23,8 @@ BackWPupHelpers::component("heading", [
     <div class="flex-auto">
       <?php
       BackWPupHelpers::component("heading-desc", [
-        "title" => __("Website storage", 'backwpup'),
-        "description" => __("Store your backup on your website's server", 'backwpup'),
+        "title" => __("Local", 'backwpup'),
+        "description" => __("Store your backup on your machine", 'backwpup'),
       ]);
       ?>
 
@@ -33,7 +33,7 @@ BackWPupHelpers::component("heading", [
         "storages" => [
           [
             "slug" => "FOLDER",
-            "label" => "Website Server",
+            "label" => "Local",
             "name" => "onboarding_storage[]",
             "active" => false,
           ],

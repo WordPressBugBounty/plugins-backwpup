@@ -317,9 +317,9 @@ class BackWPup_Page_Settings
                 'jquery',
                 'backwpupgeneral',
                 'backwpup_clipboard',
-			],
-			BackWPup::get_plugin_data( 'Version' ),
-			true
+            ],
+            filemtime(untrailingslashit(BackWPup::get_plugin_data('plugindir')) . "/assets/js/page_settings{$suffix}.js"),
+            true
         );
 
         if (\BackWPup::is_pro()) {
@@ -332,7 +332,7 @@ class BackWPup_Page_Settings
                     'backwpuppagesettings',
                     'thickbox',
 				],
-				BackWPup::get_plugin_data( 'Version' ),
+				filemtime( untrailingslashit( BackWPup::get_plugin_data( 'plugindir' ) ) . "/assets/js/settings-encryption{$suffix}.js" ),
 				true
             );
 

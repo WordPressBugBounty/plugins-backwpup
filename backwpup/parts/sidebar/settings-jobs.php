@@ -23,9 +23,7 @@ $archiveformat = BackWPup_Option::get($jobid, 'archiveformat', '.tar');
 
 <?php
 if (isset($is_in_form) && false === $is_in_form) {
-    BackWPupHelpers::component("containers/form-start", [
-		'class' => 'overflow-hidden',
-    ]);
+    BackWPupHelpers::component("containers/form-start");
 }
 ?>
 

@@ -56,7 +56,7 @@ $checkbox_style = BackWPupHelpers::clsx(
 );
 
 # Tooltip position
-$tooltip_pos = $tooltip_pos ?? "top";
+$tooltip_pos = $tooltip_pos ?? "center";
 
 $input_style = BackWPupHelpers::clsx(
   "peer/checkbox sr-only",

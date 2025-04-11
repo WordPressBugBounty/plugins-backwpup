@@ -2,18 +2,8 @@
 use BackWPup\Utils\BackWPupHelpers;
 
 /**
- * @var int $job_id The job ID.
  * @var array $excludedTables Optional. The excluded tables.
- * @var int $second_job_id ID of the second job we are retrieving the frequency settings for. Only avaialble during onboarding.
  */
-
-if ( ! isset( $job_id ) && get_site_option( 'backwpup_onboarding', false ) ) {
-	$job_id = $second_job_id;
-}
-
-if ( ! isset( $job_id ) ) {
-	return;
-}
 
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Select Tables", 'backwpup'),
@@ -31,8 +21,7 @@ foreach ($dbtables as $dbtable) {
       $defaultexcludedtables[] = $dbtable[0];
   }
 }
-
-$excludedTables = BackWPup_Option::get($job_id, 'dbdumpexclude', $defaultexcludedtables);
+$excludedTables = BackWPup_Option::get(get_site_option('backwpup_backup_files_job_id', false), 'dbdumpexclude', $defaultexcludedtables);
 
 ?>
 
@@ -80,7 +69,7 @@ $excludedTables = BackWPup_Option::get($job_id, 'dbdumpexclude', $defaultexclude
   ]);
   BackWPupHelpers::component("form/hidden", [
       "name" => "job_id",
-      "value" => $job_id,
+      "value" => get_site_option('backwpup_backup_files_job_id', false),
   ]);
  
   ?>

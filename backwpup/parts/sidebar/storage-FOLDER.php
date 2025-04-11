@@ -6,10 +6,9 @@ $job_id = $job_id ?? null;
 $dest_object = BackWPup::get_destination( "FOLDER" );
 $values = $dest_object->option_defaults();
 // if null we are on onboarding so we use the default values.
-if (null === $job_id || empty($job_id) ) {
-  $backupdir     = $values['backupdir'];
-  $maxbackups    = $values['maxbackups'];
-  $is_in_form    = true;
+if (null === $job_id) {
+  $backupdir = $values['backupdir'];
+  $maxbackups = $values['maxbackups'];
 } else {
   $backupdir = BackWPup_Option::get($job_id, 'backupdir', $values['backupdir']);
   $maxbackups = BackWPup_Option::get($job_id, 'maxbackups', $values['maxbackups']);
@@ -18,7 +17,6 @@ BackWPupHelpers::component("closable-heading", [
   'title' => __("Folder Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
-
 ?>
 
 <?php if (isset($is_in_form) && ( false === $is_in_form || 'false' === $is_in_form )) : ?>

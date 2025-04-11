@@ -129,19 +129,16 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
 
     /**
      * {@inheritdoc}
-	 */
-	public function file_get_list( ?string $jobdest = '' ): array {
-		$jobid         = 0;
-		$backup_folder = $this->option_defaults()['backupdir'];
-		if ( '' !== $jobdest ) {
-			[$jobid, $dest] = explode( '_', $jobdest, 2 );
-			$backup_folder  = BackWPup_Option::get( $jobid, 'backupdir' );
-		}
+     */
+    public function file_get_list(string $jobdest): array
+    {
+        [$jobid, $dest] = explode('_', $jobdest, 2);
 
-		$filecounter       = 0;
-		$files             = [];
-		$backup_folder     = BackWPup_File::get_absolute_path( $backup_folder );
-		$not_allowed_files = [
+        $filecounter = 0;
+        $files = [];
+        $backup_folder = BackWPup_Option::get($jobid, 'backupdir');
+        $backup_folder = BackWPup_File::get_absolute_path($backup_folder);
+        $not_allowed_files = [
             'index.php',
             '.htaccess',
             '.donotbackup',

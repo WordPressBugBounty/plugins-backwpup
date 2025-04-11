@@ -1,18 +1,17 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
-
-/**
- * @var $job_id ID Of the job
- */
-if ( $job_id === null ) {
-	return;
-}
+$job_id = $job_id ?? null;
 BackWPupHelpers::component("closable-heading", [
   'title' => __("Storages Settings", 'backwpup'),
   'type' => 'sidebar'
 ]);
-
-$destinations = BackWPup_Option::get($job_id, 'destinations');
+if (null === $job_id) {
+  $job_id = get_site_option( 'backwpup_backup_files_job_id', false );
+}
+$destinations = [];
+if (false !== $job_id) {
+	$destinations = BackWPup_Option::get($job_id, 'destinations');
+}
 
 // Get all the destinations including local.
 $cloud_destinations = BackWPup_Destinations::get_destinations(true);
@@ -22,7 +21,7 @@ foreach ($cloud_destinations as $a_cloud_destination) {
     "slug" => $a_cloud_destination["slug"],
     "label" => $a_cloud_destination["label"],
     "name" => "storage_destinations[]",
-    "active" => in_array($a_cloud_destination["slug"], $destinations ?? [] ),
+    "active" => in_array($a_cloud_destination["slug"], $destinations),
   ];
 }
 

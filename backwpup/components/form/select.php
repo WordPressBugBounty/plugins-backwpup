@@ -26,7 +26,7 @@ $options = $options ?? [];
 $withEmpty = $withEmpty ?? false;
 $required = $required ?? false;
 $id = isset($identifier) ? " id='".esc_attr($identifier)."'" : null;
-$tooltip_pos = $tooltip_pos ?? "top";
+$tooltip_pos = $tooltip_pos ?? "center";
 
 # JS actions
 $trigger = isset($trigger) ? "js-backwpup-$trigger" : "";

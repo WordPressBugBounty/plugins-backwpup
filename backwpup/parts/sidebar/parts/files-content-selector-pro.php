@@ -1,15 +1,11 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
-
-/**
- * @var int $job_id Job ID information
- */
 ?>
 <div class="mt-4 flex flex-col gap-2">
 
   <div class="p-4 rounded-lg bg-white">
     <?php
-    $checked = BackWPup_Option::get($job_id, 'backuproot');
+    $checked = BackWPup_Option::get(get_site_option('backwpup_backup_files_job_id', false), 'backuproot');
     BackWPupHelpers::component("form/checkbox", [
       "name" => "backuproot",
       "checked" => $checked,
@@ -27,8 +23,6 @@ use BackWPup\Utils\BackWPupHelpers;
         "trigger" => "open-modal",
         "display" => "exclude-files-core",
         "disabled" => !$checked,
-	      "data" => [ 'job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'modal/exclude-files-core',  ],
-
       ]);
       ?>
     </div>
@@ -36,7 +30,7 @@ use BackWPup\Utils\BackWPupHelpers;
 
   <div class="p-4 rounded-lg bg-white">
     <?php
-    $checked = BackWPup_Option::get($job_id, 'backupplugins');
+    $checked = BackWPup_Option::get(get_site_option('backwpup_backup_files_job_id', false), 'backupplugins');
     BackWPupHelpers::component("form/checkbox", [
       "name" => "backupplugins",
       "checked" => $checked,
@@ -54,7 +48,6 @@ use BackWPup\Utils\BackWPupHelpers;
         "trigger" => "open-modal",
         "display" => "exclude-files-plugins",
         "disabled" => !$checked,
-	      "data" => [ 'job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'modal/exclude-files-plugins',  ],
       ]);
       ?>
     </div>
@@ -62,7 +55,7 @@ use BackWPup\Utils\BackWPupHelpers;
 
   <div class="p-4 rounded-lg bg-white">
     <?php
-    $checked = BackWPup_Option::get($job_id, 'backupthemes');
+    $checked = BackWPup_Option::get(get_site_option('backwpup_backup_files_job_id', false), 'backupthemes');
     BackWPupHelpers::component("form/checkbox", [
       "name" => "backupthemes",
       "checked" => $checked,
@@ -80,8 +73,6 @@ use BackWPup\Utils\BackWPupHelpers;
         "trigger" => "open-modal",
         "display" => "exclude-files-themes",
         "disabled" => !$checked,
-	      "data" => [ 'job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'modal/exclude-files-themes',  ],
-
       ]);
       ?>
     </div>
@@ -89,7 +80,7 @@ use BackWPup\Utils\BackWPupHelpers;
 
   <div class="p-4 rounded-lg bg-white">
     <?php
-    $checked = BackWPup_Option::get($job_id, 'backupuploads');
+    $checked = BackWPup_Option::get(get_site_option('backwpup_backup_files_job_id', false), 'backupuploads');
     BackWPupHelpers::component("form/checkbox", [
       "name" => "backupuploads",
       "checked" => $checked,
@@ -107,8 +98,6 @@ use BackWPup\Utils\BackWPupHelpers;
         "trigger" => "open-modal",
         "display" => "exclude-files-uploads",
         "disabled" => !$checked,
-	      "data" => [ 'job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'modal/exclude-files-uploads',  ],
-
       ]);
       ?>
     </div>
@@ -116,7 +105,7 @@ use BackWPup\Utils\BackWPupHelpers;
 
   <div class="p-4 rounded-lg bg-white">
     <?php
-    $checked = BackWPup_Option::get($job_id, 'backupcontent');
+    $checked = BackWPup_Option::get(get_site_option('backwpup_backup_files_job_id', false), 'backupcontent');
     BackWPupHelpers::component("form/checkbox", [
       "name" => "backupcontent",
       "checked" => $checked,
@@ -134,8 +123,6 @@ use BackWPup\Utils\BackWPupHelpers;
         "trigger" => "open-modal",
         "display" => "exclude-files-wp-content",
         "disabled" => !$checked,
-	      "data" => [ 'job-id' => $job_id, 'block-type' => 'children', 'block-name' => 'modal/exclude-files-wp-content',  ],
-
       ]);
       ?>
     </div>

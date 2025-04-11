@@ -1,6 +1,4 @@
 jQuery(document).ready(function ($) {
-  const $document = $(document); // Cache document lookup
-
   // Helpers
   async function postToWP(data) {
     return await fetch(ajaxurl, {
@@ -21,51 +19,26 @@ jQuery(document).ready(function ($) {
    * @param string method (default: 'GET')
    */
   function requestWPApi(route, data, callback, method = 'GET', error_callback = null) {
-	  const $trigger = $(document.activeElement);
-	  const $overlayTemplate = $('#backwpup-loading-overlay-template').children().first();
-	  const $jobCard = $trigger.closest('.backwpup-job-card');
-
-	  let $overlay;
-
-	  if ($jobCard.length) {
-		  // Add overlay to the job card
-		  $overlay = $overlayTemplate.clone();
-		  $overlay.find('svg').addClass('animate-spin');
-		  $jobCard.find('.backwpup-loading-overlay').remove();
-		  $jobCard.append($overlay);
-	  }
-
-	  $.ajax({
-		  url: route,
-		  beforeSend: function(xhr) {
-			  xhr.setRequestHeader('X-WP-Nonce', backwpupApi.nonce);
-		  },
-		  method: method,
-		  data: data,
-		  success: function(response) {
-			  $overlay?.remove();
-			  $trigger.prop('disabled', false);
-			  $trigger.siblings('.backwpup-loading-overlay').remove();
-			  callback(response, data);
-		  },
-		  error: function(request, error) {
-			  console.error("API Request Failed:", route, method, data, request.status, request.statusText);
-			  console.trace("Error triggered in requestWPApi");
-
-			  $overlay?.remove();
-			  $trigger.prop('disabled', false);
-			  $trigger.siblings('.backwpup-active-spinner').remove();
-			  if (error_callback) {
-				  error_callback(request, error);
-			  }
-		  }
-	  });
+    $.ajax({
+      url: route,
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('X-WP-Nonce', backwpupApi.nonce);
+      },
+      method: method,
+      data: data,
+      success: function(response) {
+        callback(response, data);
+      },
+      error: function(request, error) {
+        if (error_callback) {
+          error_callback(request, error);
+        } else {
+          console.log(error);
+        }
+      }
+    });
   }
 
-  // Function to enable or disable all the backup button.
-  function enableBackupButton(enable = true) {
-    $(".backwpup-button-backup").prop("disabled", !enable);
-  }
   // Function to get URL parameter.
   function getUrlParameter(name, defaultValue="") {
     let searchParams = new URLSearchParams(window.location.search)
@@ -272,8 +245,8 @@ jQuery(document).ready(function ($) {
 
   /**
    * Load and open the storage sidebar using the WordPress API.
-   *
-   * @param {*} event
+   * 
+   * @param {*} event 
    */
   window.load_and_open_storage = function(event) {
     let that = $(event.currentTarget);
@@ -318,7 +291,7 @@ jQuery(document).ready(function ($) {
             $('.js-backwpup-test-' + storage + '-storage').on('click', window['test_' + storage + '_storage']);
             break;
         }
-
+        
         openSidebar(panel);
       },
       'POST',
@@ -348,138 +321,48 @@ jQuery(document).ready(function ($) {
     $sidebar.addClass("translate-x-[450px]");
   }
 
-	/**
-	 * Load and open the sidebar using the WordPress API.
-	 *
-	 * @param {*} event
-	 */
-	window.load_and_open_sidebar = function(event) {
-		let that = $(event.currentTarget);
-		let panel = that.data("content"); // Get the panel to open
-		let job_id = that.data("job-id");
-		$sidebar.find("article").hide();
-		let target = $sidebar.find("#sidebar-" + panel);
 
-		// Set default block data payload.
-		let block_data = {
-		  'job_id': job_id
-		};
+  /**
+   * Load and open the sidebar using the WordPress API.
+   * 
+   * @param {*} event 
+   */
+  window.load_and_open_sidebar = function(event) {
+    let that = $(event.currentTarget);
+    let panel = that.data("content"); // Get the panel to open
+    let job_id = that.data("job-id");
+    $sidebar.find("article").hide();
+    let target = $sidebar.find("#sidebar-" + panel);
+    requestWPApi(
+      backwpupApi.getblock,
+      {
+        'block_name': that.data("block-name"),
+        'block_type': that.data("block-type"),
+        'block_data': {
+          'job_id': job_id,
+        },
+      },
+      function(response) {
+        // Fill infos
+        target.html(response);
+        openSidebar(panel);
+        $(".js-backwpup-close-sidebar").on('click', closeSidebar);
+        $(".js-backwpup-toggle-storage").on('click', load_and_open_storage);
+      },
+      'POST',
+      function(request, error) {
+        console.log(error);
+        console.log(request);
+      }
+    );
+  }
+  $(".js-backwpup-load-and-open-sidebar").on('click', load_and_open_sidebar);
 
-		// Define basic frequency settings selectors on the onboarding screen.
-		let basic_frequency_selectors = {
-		  files: $('.js-backwpup-onboarding-files-frequency'),
-		  database: $('.js-backwpup-onboarding-database-frequency')
-		}
 
-		// Check that we are requesting frequency settings and basic frequency settings are present.
-		if ('frequency' === panel && basic_frequency_selectors.files.is(':visible') && basic_frequency_selectors.database.is(':visible')) {
-		  let basic_frequency_data = {
-			job_1: basic_frequency_selectors.files.val(),
-			job_2: basic_frequency_selectors.database.val()
-		  }
-
-		  // Update block data payload with basic frequency data.
-		  block_data['basic_frequency'] = basic_frequency_data[`job_${job_id}`];
-		}
-
-		requestWPApi(
-			backwpupApi.getblock,
-			{
-				'block_name': that.data("block-name"),
-				'block_type': that.data("block-type"),
-				'block_data': block_data,
-			},
-			function(response) {
-				// Fill infos
-				target.html(response);
-				openSidebar(panel);
-				$(".js-backwpup-close-sidebar").on('click', closeSidebar);
-				$(".js-backwpup-toggle-storage").on('click', load_and_open_storage);
-			},
-			'POST',
-			function(request, error) {
-				console.log(error);
-				console.log(request);
-			}
-		);
-	}
-	$document.on('click', '.js-backwpup-load-and-open-sidebar', load_and_open_sidebar);
-
-	/**
-	 * Load and open modals using the WordPress API.
-	 *
-	 * @param {*} event
-	 */
-	window.load_and_open_modal = function(event) {
-		let that = $(event.currentTarget);
-		let panel = that.data("content"); // Get the panel to open
-		let job_id = that.data("job-id");
-		let target = $modal.find("#sidebar-" + panel);
-
-		requestWPApi(
-			backwpupApi.getblock,
-			{
-				'block_name': that.data("block-name"),
-				'block_type': that.data("block-type"),
-				'block_data': {
-					'job_id': job_id,
-				},
-			},
-			function(response) {
-				// Fill infos
-				target.html(response);
-				openModal(panel);
-				$(".js-backwpup-close-modal").on('click', closeModal);
-			},
-			'POST',
-			function(request, error) {
-				console.log(error);
-				console.log(request);
-			}
-		);
-	}
-	$document.on('click', '.js-backwpup-load-and-open-modal', load_and_open_modal);
-
-	window.load_exclusions_modal = function(job_id, panel) {
-		let target = $modal.find("#sidebar-" + panel);
-		let block_name = 'modal/'+ panel;
-		let block_type = 'children';
-
-		requestWPApi(
-			backwpupApi.getblock,
-			{
-				'block_name': block_name,
-				'block_type': block_type,
-				'block_data': {
-					'job_id': job_id,
-				},
-			},
-			function(response) {
-				// Fill infos
-				target.html(response);
-				$(".js-backwpup-close-modal").on('click', closeModal);
-			},
-			'POST',
-			function(request, error) {
-				console.log(error);
-				console.log(request);
-			}
-		);
-	}
-
-	$document.on('click', '.backwpup-btn-select-files, .onboarding-advanced-files-settings ', function () {
-		let that = $(this);
-		let job_id = that.data("job-id");
-		let panels = ['exclude-files-core', 'exclude-files-plugins', 'exclude-files-root', 'exclude-files-themes', 'exclude-files-uploads', 'exclude-files-wp-content'];
-		panels.forEach(function (panel) {
-			load_exclusions_modal(job_id, panel)
-		});
-	});
-
-	$document.on('click', '.js-backwpup-open-sidebar', function () {
-	    const panel = $(this).data("content");
-	    openSidebar(panel);
-	});
+  $(".js-backwpup-open-sidebar").on('click', function () {
+    const panel = $(this).data("content"); // Get the panel to open
+    openSidebar(panel);
+  });
 
   $(".js-backwpup-close-sidebar").on('click', closeSidebar);
 
@@ -707,26 +590,20 @@ jQuery(document).ready(function ($) {
    * Initialize the modal event
    */
   function initModalEvent() {
-	  // Delegated (for future elements)
-	  $(document).on('click', '.js-backwpup-open-modal', handler);
-
-	  // Direct (for current elements)
-	  $('.js-backwpup-open-modal').on('click', handler);
-
-	  function handler() {
-		  const panel = $(this).data("content");
-		  let dataset = {};
-		  if ($(this).data("url")) {
-			  dataset.url = $(this).data("url");
-		  }
-		  openModal(panel, dataset);
-	  }
+    $(".js-backwpup-open-modal").on('click', function () {
+      const panel = $(this).data("content");
+      let dataset = {};
+      if ($(this).data("url")) {
+        dataset.url = $(this).data("url");
+      }
+      openModal(panel,dataset);
+    });
   }
 
-  $document.on('click', '.js-backwpup-close-modal', closeModal);
+  $(".js-backwpup-close-modal").on('click', closeModal);
 
   // Filter table list
-  $document.on('keyup', '.js-backwpup-filter-tables', function () {
+  $(".js-backwpup-filter-tables").on('keyup', function () {
     const filter = $(this).val().toLowerCase();
 
     $(".js-backwpup-tables-list label").each(function () {
@@ -766,6 +643,70 @@ jQuery(document).ready(function ($) {
       isCheckboxListenerInitialized = true;
     }
 
+  });
+
+  // Frequency fields
+  function showFrequencyFilesFields(frequency) {
+    let frequencies = ["daily", "weekly", "monthly"];
+
+    if (frequency === "hourly") {
+      $(".js-backwpup-frequency-file-hide-if-hourly, .js-backwpup-frequency-file-show-if-weekly, .js-backwpup-frequency-file-show-if-monthly").hide();
+    }
+
+    if (frequency === "weekly") {
+      $(".js-backwpup-frequency-file-show-if-hourly, .js-backwpup-frequency-file-show-if-monthly").hide();
+    }
+
+    if (frequency === "monthly") {
+      $(".js-backwpup-frequency-file-show-if-hourly, js-backwpup-frequency-file-show-if-weekly").hide();
+    }
+
+    if (frequency === "daily") {
+      $(".js-backwpup-frequency-file-show-if-hourly, .js-backwpup-frequency-file-show-if-weekly, .js-backwpup-frequency-file-show-if-monthly").hide();
+    }
+  
+    if ( frequencies.includes(frequency) ) {
+      $(".js-backwpup-frequency-file-hide-if-hourly").show();
+    }
+
+    $(".js-backwpup-frequency-file-show-if-" + frequency).show();
+  }
+
+  function showFrequencyTablesFields(frequency) {
+    let frequencies = ["daily", "weekly", "monthly"];
+
+    if (frequency === "hourly") {
+      $(".js-backwpup-frequency-table-show-if-weekly, .js-backwpup-frequency-table-show-if-monthly, .js-backwpup-frequency-table-hide-if-hourly").hide();
+    }
+
+    if (frequency === "weekly") {
+      $(".js-backwpup-frequency-table-show-if-hourly, .js-backwpup-frequency-table-show-if-monthly").hide();
+    }
+
+    if (frequency === "monthly") {
+      $(".js-backwpup-frequency-table-show-if-hourly, .js-backwpup-frequency-table-show-if-weekly").hide();
+    }
+
+    if (frequency === "daily") {
+      $(".js-backwpup-frequency-table-show-if-hourly, .js-backwpup-frequency-table-show-if-weekly, .js-backwpup-frequency-table-show-if-monthly").hide();
+    }
+
+    if ( frequencies.includes(frequency) ) {
+      $(".js-backwpup-frequency-table-hide-if-hourly").show();
+    }
+
+    $(".js-backwpup-frequency-table-show-if-" + frequency).show();
+  }
+
+  showFrequencyFilesFields($(".js-backwpup-frequency-files").val());
+  showFrequencyTablesFields($(".js-backwpup-frequency-tables").val());
+
+  $(".js-backwpup-frequency-files").on('change', function () {
+    showFrequencyFilesFields($(this).val());
+  });
+
+  $(".js-backwpup-frequency-tables").on('change', function () {
+    showFrequencyTablesFields($(this).val());
   });
 
   /**
@@ -841,7 +782,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Add tag field
-  $document.on('click', '.js-backwpup-add-input-button', function () {
+  $( ".js-backwpup-add-input-button" ).on( 'click', function () {
     // Get value and clear field
     const tag = $(this).prev().val().trim(); // Trim whitespace
     if ( tag === "" ) return;
@@ -874,7 +815,7 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  $document.on(
+  $(".js-backwpup-add-input-tags").on(
     "click",
     ".js-backwpup-remove-tag",
     function () {
@@ -889,7 +830,7 @@ jQuery(document).ready(function ($) {
   );
 
   // Toggle include / exclude files
-  $document.on('click', ".js-backwpup-toggle-include button" , function () {
+  $(".js-backwpup-toggle-include button").on('click', function () {
     const $element = $(this).parents(".js-backwpup-toggle-include");
     const $checkbox = $element.find("input[type=checkbox]");
 
@@ -904,158 +845,59 @@ jQuery(document).ready(function ($) {
     }
   });
 
-  // Start Backup Now
-  $(".js-backwpup-start-backup-now").on('click', function () {
-    enableBackupButton(false);
-    requestWPApi(backwpupApi.backupnow, {}, function(response) {
+  // Start backup
+  $(".js-backwpup-start-backup").on('click', function () {
+    requestWPApi(backwpupApi.startbackup, {}, function(response) {
       if ( response.status === 200 ) {
-        window.location.reload();
+        setTimeout(function() {
+            window.location.reload();
+        }, 500);
       }
-    },
-    'POST',
-    function (request, error) {
-      console.log(request);
-      console.log(error);
-      enableBackupButton(true);
-    });
+    }, 'POST');
   });
 
   // Exclude files in sidebar
-  $document.on('change', '.js-backwpup-toggle-exclude', function () {
+  $(".js-backwpup-toggle-exclude").on('change', function () {
     const checked = $(this).prop("checked");
     $(this).closest("div").find("button").prop("disabled", !checked);
   });
 
   // Toggle Files.
-  $("#backwup-next-scheduled-backups").on('change', '.js-backwpup-toggle-job', function () {
+  $(".js-backwpup-toggle-files").on('change', function () {
     const checked = $(this).prop("checked");
     let job_id = $(this).data("job-id");
-    $(`#backwpup-${job_id}-options`).find("button").prop("disabled", !checked);
+    $("#backwpup-files-options").find("button").prop("disabled", !checked);
     requestWPApi(
-        backwpupApi.updatejob,
-        {
-          'job_id': job_id,
-          'activ': checked
-        },
-        function (response) {
-          $(`#backwpup-${job_id}-options div p.label-scheduled`).html(response.message);
-        },
-        "POST"
-    );
-  });
-
-
-  // Toggle Delete Job.
-  $("#backwup-next-scheduled-backups").on('click', ".js-backwpup-delete-job", function () {
-    let job_id = $(this).data("job-id");
-    requestWPApi(
-        backwpupApi.delete_job,
-        {
-          'job_id': job_id,
-        },
-        function (response) {
-          if (response.success) {
-            $(`#backwpup-${job_id}-options`).remove();
-            if ($('.backwpup-job-card').length === 0) {
-              $("#backwpup-backup-now").prop("disabled", true);
-            }
-            loadBackupsListingAndPagination(getUrlParameter('page_num', 1));
-	          backwpupDisplaySettingsToast('success', response.message);
-          } else {
-	          backwpupDisplaySettingsToast('error', response.message);
-          }
-        },
-        "DELETE"
-    );
-  });
-
-  $("#backwup-next-scheduled-backups").on('change', '.backwpup-dynamic-backup-type', function() {
-    // Remove classes from all labels and child divs
-    $('.backwpup-dynamic-input label').removeClass('bg-secondary-lighter border-secondary-base');
-    $('.backwpup-dynamic-input label > div').removeClass('border-secondary-base');
-
-    // Add classes to the selected label and its child div
-    $(this).closest('label').addClass('bg-secondary-lighter border-secondary-base');
-    $(this).closest('label').find('div').addClass('border-secondary-base');
-  });
-
-  const $target_dynamic_card = '.backwpup-dynamic-backup-card';
-
-  const toggleDynamicCardDisplay = (target, state = 'hidden') => {
-    const new_backup_card = '.backwpup-add-new-backup-card';
-    switch (state) {
-      case 'visible':
-         // Check for target visibility.
-        if (!$(target).is(':visible')) {
-          $(target).addClass('flex').removeClass('hidden');
-          $(new_backup_card).addClass('hidden').removeClass('flex');
-        }
-        break;
-
-      default:
-         // Check for target visibility.
-        if ($(target).is(':visible')) {
-          $(target).addClass('hidden').removeClass('flex');
-          $(new_backup_card).addClass('flex').removeClass('hidden');
-
-          $('.backwpup-dynamic-input label')
-          .removeClass('bg-secondary-lighter border-secondary-base')
-          .find('> div').removeClass('border-secondary-base')
-          .end().first()
-          .addClass('bg-secondary-lighter border-secondary-base')
-          .find('input').prop('checked', true)
-          .end().find('> div').addClass('border-secondary-base');
-        }
-        break;
-    }
-  }
-
-  // Show dynamic backup card when button is clicked.
-  $("#backwup-next-scheduled-backups").on('click', '#js_backwpup_add_new_backup', function () {
-    toggleDynamicCardDisplay($target_dynamic_card, 'visible');
-  });
-
-  $("#backwup-next-scheduled-backups").on('click', '#js_backwpup_close_dynamic_backup_card', function () {
-    toggleDynamicCardDisplay($target_dynamic_card);
-  });
-
-  $("#backwup-next-scheduled-backups").on('click', "#js-backwpup-add-new-backup", function (e) {
-    e.preventDefault();
-    $(this).prop('disabled', true);
-    let that = $(this);
-    requestWPApi(
-      backwpupApi.addjob,
+      backwpupApi.updatejob,
       {
-        type: $('#js-backwpup-add-new-backup-form').find('input[name="type"]:checked').val(),
+        'job_id': job_id,
+        'activ': checked,
+        'type': 'files',
       },
       function (response) {
-        if ( response.success == true ) {
-          $("#backwpup-backup-now").prop("disabled", false);
-          loadBackupsListingAndPagination(getUrlParameter('page_num', 1));
-          // Display floating success notice.
-		  backwpupDisplaySettingsToast('success', response.message);
-          requestWPApi(
-            backwpupApi.getjobslist,
-            {},
-            function (response) {
-              $('#backwup-next-scheduled-backups').html(response);
-              // get the html from backwpup_dynamic_response_content and append back to the html container.
-              const $dynamic_content = $('#backwpup_dynamic_response_content').html();
-              $('#backwup-next-scheduled-backups').append($dynamic_content);
-              // Revert state of the dynamic backup addition card.
-              toggleDynamicCardDisplay($target_dynamic_card);
-            },
-            "GET",
-          );
-        }
+        $('#backwpup-files-options div p.label-scheduled').html(response.message);
       },
-      "POST",
-      function (request, error) {
-        // Display floating error notice.
-        backwpupDisplaySettingsToast('error', request.responseText, 5000);
-        that.prop('disabled', false);
-      }
+      "POST"
     );
+  });
+
+  // Toggle Database.
+  $(".js-backwpup-toggle-database").on('change', function () {
+    const checked = $(this).prop("checked");
+    let job_id = $(this).data("job-id");
+    $("#backwpup-database-options").find("button").prop("disabled", !checked);
+    requestWPApi(
+      backwpupApi.updatejob,
+      {
+        'job_id': job_id,
+        'activ': checked,
+        'type': 'database',
+      },
+      function (response) {
+        $('#backwpup-database-options div p.label-scheduled').html(response.message);
+      },
+      "POST"
+    );  
   });
 
   // Test and save S3 storage.
@@ -1201,8 +1043,8 @@ jQuery(document).ready(function ($) {
       'ftptimeout' : $("#ftptimeout").val(),
       'ftpdir' : $("#ftpdir").val(),
       'ftpmaxbackups' : $("#ftpmaxbackups").val(),
-      'ftpssl' : $("#ftpssl").prop("checked") ? 1 : 0,
-      'ftppasv' : $("#ftppasv").prop("checked") ? 1 : 0,
+      'ftpssl' : $("#ftpssl").prop("checked"),
+      'ftppasv' : $("#ftppasv").prop("checked"),
     };
     requestWPApi(
       backwpupApi.cloudsaveandtest,
@@ -1239,17 +1081,13 @@ jQuery(document).ready(function ($) {
       backwpupApi.cloudsaveandtest,
       data,
       function (response) {
-        refresh_storage_destinations('GDRIVE', response.connected);
-        backwpupDisplaySettingsToast('success', response.message);
+        refresh_storage_destinations(job_id, 'GDRIVE', response.connected);
         closeSidebar();
       },
       "POST",
       function (request, error) {
-        refresh_storage_destinations('GDRIVE', false);
-        const errorMessage = request.responseJSON && request.responseJSON.error
-            ? request.responseJSON.error
-            : (request.responseText || 'Unknown error occurred');
-        backwpupDisplaySettingsToast('danger', errorMessage , -1);
+        refresh_storage_destinations(job_id, 'GDRIVE', false);
+        alert("Error in cloud configuration");
       }
     );
   };
@@ -1539,7 +1377,7 @@ jQuery(document).ready(function ($) {
   });
 
   // Toggle storages
-  $document.on('click', ".js-backwpup-toggle-storage", function() {
+  $(".js-backwpup-toggle-storage").on('click', function() {
     const content = $(this).data("content");
     openSidebar(content);
   });
@@ -1650,7 +1488,7 @@ jQuery(document).ready(function ($) {
   // OnBoarding toggle files.
   $(".js-backwpup-onboarding-toggle-files").on('change', function() {
     const checked = $(this).prop("checked");
-    $(".onboarding-advanced-files-settings").prop("disabled", !checked);
+    $(".onboarding-advanced-files-setings").prop("disabled", !checked);
     $(".onboarding-files-frequency").prop("disabled", !checked);
     $(".onboarding-files-frequency-settings").prop("disabled", !checked);
     verifyOnboardingStep1();
@@ -1759,45 +1597,73 @@ jQuery(document).ready(function ($) {
   initGdriveEvents();
   initHidriveEvents();
 
-  $(document).on( 'change', '#backwpup-job-title', function() {
-    if ( ! $(this).val().trim()  ) {
-      $('#js-backwpup-edit-title-warning').removeClass('hidden');
-      $('#js-backwpup-save-title').prop('disabled', true);
-      return;
-    }
-
-    if ( $('#js-backwpup-edit-title-warning').hasClass('hidden') ) {
-      return;
-    }
-
-    $('#js-backwpup-edit-title-warning').addClass('hidden');
-    $('#js-backwpup-save-title').prop('disabled', false);
-  } );
-
-  $(document).on('click', '#js-backwpup-save-title', function(event) {
-    event.preventDefault();
-    const job_id = $('#backwpup-job-id').val();
+  // Handle Save Settings button click
+  $(".save_database_settings").on('click', function () {
+    const container = $(this).closest("article");
+    const frequency = container.find("select[name='frequency']").val();
+    const startTime = container.find("input[name='start_time']").val();
+    const hourlyStartTime = container.find("select[name='hourly_start_time']").val();
+    const day_of_week = container.find("select[name='day_of_week']").val();
+    const day_of_month = container.find("select[name='day_of_month']").val();
 
     const data = {
-      title: $('#backwpup-job-title').val(),
-      job_id: job_id,
+        frequency: frequency,
+        start_time: startTime,
+        hourly_start_time: hourlyStartTime,
+        day_of_week: day_of_week,
+        day_of_month: day_of_month,
     };
-  
+
     requestWPApi(
-      backwpupApi.updatejobtitle,
+      backwpupApi.save_database_settings,
       data,
-      function(response) {
-        if (response.code === 'success') {
-          $('#backwpup-'+job_id+'-options').find('.backwpup-job-title').html(response.data.title);
-  
-          backwpupDisplaySettingsToast( 'success', response.message );
+      function (response) {
+        if (response.success) {
+          $('#backwpup-database-options div p.label-scheduled').html(response.next_backup);
+          if ($("#backwpup-onboarding-panes")) {
+            let onboarding_select = $("#backwpup-onboarding-panes").find("select[name='database_frequency']");
+            let select = $("#sidebar-frequency-tables").find("select[name='frequency']");
+            onboarding_select.val(select.val());
+          }
           closeSidebar();
-        }
+        } 
       },
-      "POST",
-      function(request) {
-        backwpupDisplaySettingsToast( 'danger', request.responseJSON.message );
-      }
+      "POST"
+    );
+  });
+
+  // Handle Save Settings button click
+  $(".save_files_settings").on('click', function () {
+    const container = $(this).closest("article");
+    const frequency = container.find("select[name='frequency']").val();
+    const startTime = container.find("input[name='start_time']").val();
+    const hourlyStartTime = container.find("select[name='hourly_start_time']").val();
+    const day_of_week = container.find("select[name='day_of_week']").val();
+    const day_of_month = container.find("select[name='day_of_month']").val();
+
+    const data = {
+        frequency: frequency,
+        start_time: startTime,
+        hourly_start_time: hourlyStartTime,
+        day_of_week: day_of_week,
+        day_of_month: day_of_month,
+    };
+
+    requestWPApi(
+      backwpupApi.save_files_settings,
+      data,
+      function (response) {
+        if (response.success) {
+          $('#backwpup-files-options div p.label-scheduled').html(response.next_backup);
+          if ($("#backwpup-onboarding-panes")) {
+            let onboarding_select = $("#backwpup-onboarding-panes").find("select[name='files_frequency']");
+            let select = $("#sidebar-frequency-files").find("select[name='frequency']");
+            onboarding_select.val(select.val());
+          }
+          closeSidebar();
+        } 
+      },
+      "POST"
     );
   });
 
@@ -1823,7 +1689,7 @@ jQuery(document).ready(function ($) {
     $('#bulk-actions-apply').data('action', selectedAction);
   });
   // Handle Save Settings - excluded tables button click for table selection
-  $document.on('click', "#save-excluded-tables", function () {
+  $("#save-excluded-tables").on("click", function () {
     // Collect all checkbox elements in the container
     const allCheckboxes = $(".js-backwpup-tables-list input[type='checkbox']");
     const closestArticle = $(this).closest("article");
@@ -1858,9 +1724,6 @@ jQuery(document).ready(function ($) {
         serializedData,
         function (response) {
             if (response.status === 200) {
-                if ( ! $("#backwpup-onboarding-panes").length ) {
-	                backwpupDisplaySettingsToast('success', response.message);
-                }
                 closeSidebar();
             }
         },
@@ -1870,7 +1733,7 @@ jQuery(document).ready(function ($) {
 
   $('.js-backwpup-license_update').on('click', update_license);
 
-  $document.on('click', '.file-exclusions-submit', function (e) {
+  $('.file-exclusions-submit').on('click', function (e) {
     const $article = $(this).closest('article');
     const $inputs = $article.find('input');
     const formData = {};
@@ -1920,9 +1783,6 @@ jQuery(document).ready(function ($) {
     requestWPApi(backwpupApi.save_file_exclusions, serializedData, function (response) {
         if (response.status === 200) {
           closeSidebar();
-          if ( ! $("#backwpup-onboarding-panes").length ) {
-	          backwpupDisplaySettingsToast('success', response.message);
-          }
         }
     }, 'POST');
   });
@@ -1945,7 +1805,9 @@ jQuery(document).ready(function ($) {
       requestWPApi(backwpupApi.startbackup, data, function(response) {
         if (response.status === 200) {
           setTimeout(function() {
+            if ('#dbbackup' !== window.location.hash ) {
               window.location.reload();
+            }
           }, 500);
         } else if ( 301 === response.status ) {
           window.location = response.url;
@@ -1961,18 +1823,9 @@ jQuery(document).ready(function ($) {
   
   // Call the functions when the "First Backup" page is loaded
   if (window.location.search.includes('backwpupfirstbackup')) {
-    if ( ! isGenerateJsIncluded() ) {
-      requestWPApi(backwpupApi.backupnow, {first_backup: 1}, function(response) {
-        if (200 === response.status) {
-          setTimeout(function() {
-              window.location.reload();
-          }, 500);
-        } else if ( 301 === response.status ) {
-          window.location = response.url;
-        }
-      },
-      'POST');
-    }
+    startBackupProcess( {
+      first_backup: 1
+    } );
   }
 
   // Replace the 'Buy Pro' menu item with the correct link.
@@ -2009,172 +1862,6 @@ jQuery(document).ready(function ($) {
       },
     });
   } );
-
-  /**
-   * Display a toast notification in the settings page.
-   * @param type disable auto-remove if type is not 'success'.
-   * @param message
-   * @param duration - The duration in milliseconds to display the toast. Default is 2000ms. Set to -1 to disable auto-remove.
-   */
-  function backwpupDisplaySettingsToast(type = 'info', message = '', duration = 2000) {
-    requestWPApi(
-        backwpupApi.getblock,
-        {
-          'block_name': 'alerts/info',
-          'block_type': 'component',
-          'block_data': {
-            'type': type,
-            'font': 'small',
-            'dismiss_icon': true,
-            'content': message
-          },
-        },
-        function(response) {
-          const toast = jQuery('<div class="transform translate-y-2 transition-all duration-300"></div>').html(response);
-          $('#bwp-settings-toast').html('');
-          $('#bwp-settings-toast').append(toast);
-          // Animate in
-          setTimeout(() => {
-            toast.addClass('opacity-100 translate-y-0');
-          }, 10);
-
-          // Auto-remove after duration
-          if (duration !== -1 || type !== 'success') {
-            setTimeout(() => {
-              toast.removeClass('opacity-100 translate-y-0').addClass('opacity-0 translate-y-2');
-              setTimeout(() => {
-                toast.remove();
-              }, 300);
-            }, duration);
-          }
-        },
-        'POST',
-        function(request, error) {
-          console.log(error,request);
-        }
-    );
-  }
-
-  // hide toast on click.
-  $(document).on('click', '#bwp-settings-toast #dismiss-icon', function() {
-    const toastElements = $('#bwp-settings-toast').children();
-
-    toastElements.removeClass('opacity-100 translate-y-0')
-        .addClass('opacity-0 translate-y-2');
-
-    setTimeout(() => {
-      toastElements.remove();
-    }, 300);
-  });
-
-  /**
-   * Function to initialize the frequency job settings
-   * Runs when the element `.js-backwpup-frequency-job` is found in the DOM.
-   */
-  function runWhenJobFrequencySettingsLoaded() {
-    const $element = $(".js-backwpup-frequency-job");
-    if ($element.length) {
-      showFrequencyJobFields($element.val()); // Update UI based on the selected frequency
-    }
-  }
-
-  /**
-   * MutationObserver: Watches for new elements being added to the DOM
-   * When a `.js-backwpup-frequency-job` field appears, it triggers `runWhenJobFrequencySettingsLoaded()`
-   */
-  const observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-      mutation.addedNodes.forEach(function (node) {
-        // Check if the added node or any of its children contains `.js-backwpup-frequency-job`
-        if ($(node).is(".js-backwpup-frequency-job") || $(node).find(".js-backwpup-frequency-job").length) {
-          runWhenJobFrequencySettingsLoaded();
-        }
-      });
-    });
-  });
-
-  // Start observing DOM changes on the entire document
-  observer.observe(document.body, { childList: true, subtree: true });
-
-  /**
-   * Event Listener: Detect changes in frequency dropdown
-   * Calls `showFrequencyJobFields()` whenever the user selects a new frequency.
-   */
-  $document.on("change", ".js-backwpup-frequency-job", function () {
-    showFrequencyJobFields($(this).val());
-  });
-
-  /**
-   * Function to show/hide elements based on selected job frequency
-   * @param {string} frequency - The selected frequency value (e.g., "hourly", "weekly", "monthly").
-   */
-  function showFrequencyJobFields(frequency) {
-    const frequencies = ["daily", "weekly", "monthly"];
-    const hideClasses = [
-      ".js-backwpup-frequency-job-show-if-hourly",
-      ".js-backwpup-frequency-job-show-if-weekly",
-      ".js-backwpup-frequency-job-show-if-monthly",
-      ".js-backwpup-frequency-job-hide-if-hourly",
-    ];
-
-    // Hide all elements initially
-    $(hideClasses.join(", ")).hide();
-
-    // Show the elements that should be visible for the selected frequency
-    if (frequencies.includes(frequency)) {
-      $(".js-backwpup-frequency-job-hide-if-hourly").show();
-    }
-
-    $(`.js-backwpup-frequency-job-show-if-${frequency}`).show();
-  }
-
-  /**
-   * Event Listener: Handles the "Save Job Settings" button click
-   * Extracts form data and sends an AJAX request to save the job settings.
-   */
-  $document.on("click", "#save-job-settings", function () {
-    const container = $(this).closest("article");
-
-    // Collect input values from the form
-    const data = {
-      frequency: container.find("select[name='frequency']").val(),
-      start_time: container.find("input[name='start_time']").val(),
-      hourly_start_time: container.find("select[name='hourly_start_time']").val(),
-      day_of_week: container.find("select[name='day_of_week']").val(),
-      day_of_month: container.find("select[name='day_of_month']").val(),
-      job_id: container.find("input[name='job_id']").val(),
-    };
-
-    // Send AJAX request to save job settings
-    requestWPApi(
-        backwpupApi.save_job_settings,
-        data,
-        function (response) {
-          if (response.status === 200) {
-            // Update the next scheduled backup time in the UI
-            $(`#backwpup-${data.job_id}-options div p.label-scheduled`).html(response.next_backup);
-
-            // Sync onboarding frequency dropdown (if present)
-            const onboardingPane = $("#backwpup-onboarding-panes");
-            const sidebarFrequency = $("#sidebar-frequency").find("select[name='frequency']");
-
-            if (onboardingPane.length) {
-              console.log("select[name='job_"+data.job_id+"_frequency']");
-              onboardingPane.find("select[name='job_"+data.job_id+"_frequency']").val(sidebarFrequency.val());
-            } else {
-	            backwpupDisplaySettingsToast('success', response.message);
-			}
-
-            // Close the settings sidebar
-            closeSidebar();
-          }
-        },
-        "POST"
-    );
-  });
-
-  // Run the job settings function on initial page load
-  runWhenJobFrequencySettingsLoaded();
 
 });
 

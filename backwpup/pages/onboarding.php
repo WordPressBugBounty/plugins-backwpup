@@ -1,11 +1,5 @@
 <?php
   use BackWPup\Utils\BackWPupHelpers;
-
-/**
- * @var int $first_job_id ID of the first job we are retrieving the frequency settings for.
- * @var int $second_job_id ID of the second job we are retrieving the frequency settings for.
- */
-
 ?>
 <?php BackWPupHelpers::component("containers/form-start", [
   "scrollable" => false,
@@ -33,14 +27,11 @@
 
     <div class="p-8 bg-grey-100 rounded-lg flex flex-col flex-auto" id="backwpup-onboarding-panes">
       <article class="flex flex-col flex-auto" data-step="1">
-        <?php BackWPupHelpers::component("onboarding/step1", ['first_job_id' => $first_job_id, 'second_job_id' => $second_job_id]); ?>
+        <?php BackWPupHelpers::component("onboarding/step1"); ?>
       </article>
 
       <article class="hidden flex-col flex-auto" data-step="2">
-        <?php BackWPupHelpers::component("onboarding/step2", [
-	        "first_job_id"  => $first_job_id,
-	        "second_job_id" => $second_job_id,
-        ]); ?>
+        <?php BackWPupHelpers::component("onboarding/step2"); ?>
       </article>
 
       <article class="hidden flex-col flex-auto" data-step="3">
@@ -52,10 +43,7 @@
 
 <?php
 BackWPupHelpers::component("containers/sidebar", [
-    "is_in_form" => true,
-	"first_job_id"  => $first_job_id,
-	"second_job_id" => $second_job_id,
-
+  "is_in_form" => true,
 ]);
 BackWPupHelpers::component("containers/modal");
 BackWPupHelpers::component("containers/form-end");

@@ -1,11 +1,9 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
-
-/**
- * @var int $first_job_id ID of the first job we are retrieving the frequency settings for.
- * @var int $second_job_id ID of the second job we are retrieving the frequency settings for.
- */
-
+$select_files = 'select-files';
+if (BackWPup::is_pro()) {
+  $select_files .= '-pro';
+}
 ?>
 <div class="flex-auto">
 
@@ -23,12 +21,11 @@ use BackWPup\Utils\BackWPupHelpers;
       <p>
         <?php
         BackWPupHelpers::component("form/button", [
-			"type" => "link",
-			"label" => __("Advanced settings", 'backwpup'),
-			"trigger" => "load-and-open-sidebar",
-			"class" => "onboarding-advanced-files-settings",
-			"display" => "select-files",
-	        "data" => [ 'job-id' => $first_job_id, 'block-type' => 'children', 'block-name' => 'sidebar/select-files',  ],
+          "type" => "link",
+          "label" => __("Advanced settings", 'backwpup'),
+          "trigger" => "open-sidebar",
+          "class" => "onboarding-advanced-files-setings",
+          "display" => $select_files,
         ]);
         ?>
       </p>
@@ -72,12 +69,11 @@ use BackWPup\Utils\BackWPupHelpers;
       <p>
         <?php
         BackWPupHelpers::component("form/button", [
-			"type" => "link",
-			"label" => __("Advanced settings", 'backwpup'),
-			"class" => "onboarding-advanced-database-setings",
-			"trigger" => "load-and-open-sidebar",
-			"display" => "select-tables",
-	        "data" => [ 'job-id' => $second_job_id, 'block-type' => 'children', 'block-name' => 'sidebar/select-tables',  ],
+          "type" => "link",
+          "label" => __("Advanced settings", 'backwpup'),
+          "class" => "onboarding-advanced-database-setings",
+          "trigger" => "open-sidebar",
+          "display" => "select-tables",
         ]);
         ?>
       </p>

@@ -1,11 +1,5 @@
 <?php
 use BackWPup\Utils\BackWPupHelpers;
-
-/**
- * @var int $first_job_id ID of the first job we are retrieving the frequency settings for.
- * @var int $second_job_id ID of the second job we are retrieving the frequency settings for.
- */
-
 BackWPupHelpers::component("heading", [
   "level" => 2,
   "title" => __("When to automatically create your backup?", 'backwpup') . "<sup>*</sup>",
@@ -25,21 +19,21 @@ BackWPupHelpers::component("heading", [
       ?>
       <p>
         <?php
-	        BackWPupHelpers::component("form/button", [
-		        "type" => "link",
-		        "label" => __("Advanced settings", 'backwpup'),
-		        "trigger" => "load-and-open-sidebar",
-		        "display" => 'frequency',
-		        "data"    => [ 'job-id' => $first_job_id, 'block-type' => 'children', 'block-name' => 'sidebar/frequency',  ],
-	        ]);
+          BackWPupHelpers::component("form/button", [
+            "type" => "link",
+            "class" => "onboarding-files-frequency-settings",
+            "label" => __("Advanced settings", 'backwpup'),
+            "trigger" => "open-sidebar",
+            "display" => "frequency-files",
+          ]);
         ?>
       </p>
     </div>
 
     <?php
     BackWPupHelpers::component("form/select", [
-      "name" => "job_".$first_job_id."_frequency",
-        "label" => __("Frequency", 'backwpup'),
+      "name" => "files_frequency",
+      "label" => __("Frequency", 'backwpup'),
       "class" => "onboarding-files-frequency",
       "value" => "monthly",
       "trigger" => "onboarding-files-frequency",
@@ -65,19 +59,19 @@ BackWPupHelpers::component("heading", [
       ?>
       <p>
         <?php
-        BackWPupHelpers::component("form/button", [
-	        "type" => "link",
-	        "label" => __("Advanced settings", 'backwpup'),
-	        "trigger" => "load-and-open-sidebar",
-	        "display" => 'frequency',
-	        "data"    => [ 'job-id' => $second_job_id, 'block-type' => 'children', 'block-name' => 'sidebar/frequency',  ],
-        ]);
+          BackWPupHelpers::component("form/button", [
+            "type" => "link",
+            "label" => __("Advanced settings", 'backwpup'),
+            "class" => "onboarding-database-frequency-settings",
+            "trigger" => "open-sidebar",
+            "display" => "frequency-tables",
+          ]);
         ?>
       </p>
     </div>
     <?php
     BackWPupHelpers::component("form/select", [
-	    "name" => "job_".$second_job_id."_frequency",
+      "name" => "database_frequency",
       "label" => __("Frequency", 'backwpup'),
       "value" => "monthly",
       "class" => "onboarding-database-frequency",

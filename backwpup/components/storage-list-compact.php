@@ -17,19 +17,13 @@ if (count($storages)>0) {
 ?>
 <ul class="<?php echo BackWPupHelpers::clsx("flex flex-wrap gap-2", $justify_class); ?>">
   <?php foreach ($storages as $storage) : ?>
-    <li class="<?php echo BackWPupHelpers::clsx("rounded flex items-center", $item_class); ?>">
+    <li class="<?php echo BackWPupHelpers::clsx("p-1 rounded", $item_class); ?>">
       <?php  
-        $content = $storage;
-
-        if ( $content === 'FOLDER' ) {
-          $content = __( 'Website Server', 'backwpup' );
-        }
-
          echo BackWPupHelpers::component("tooltip", [
-          "content" => __($content, 'backwpup'),
+          "content" => __('Stored on : '.$storage, 'backwpup'),
           "icon_name" => $storage,
           "icon_size" => "large",
-          "position" => "top",
+          "position" => "center",
         ]);
       ?>
     </li>

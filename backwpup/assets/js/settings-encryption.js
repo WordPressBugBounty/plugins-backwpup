@@ -320,14 +320,10 @@
           "error",
           document.querySelector(".nav-tab-wrapper")
         );
-
-        this.disableSaveSettings();
-
-        return ;
+        return;
       }
 
-      // Ensuring the form is updated when key is downloaded.
-      this.enableSaveSettings()
+      this.disableSaveSettings();
     },
 
     enableSaveSettings: function () {

@@ -2,8 +2,6 @@
 
 namespace Inpsyde\BackWPup\Notice;
 
-use BackWPup;
-
 abstract class Notice
 {
     /**
@@ -111,11 +109,11 @@ abstract class Notice
         $suffix = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 
         wp_enqueue_script(
-			'backwpup-notice',
-			untrailingslashit( BackWPup::get_plugin_data( 'URL' ) ) . sprintf( '/assets/js/notice%s.js', $suffix ),
-			[ 'underscore', 'jquery' ],
-			BackWPup::get_plugin_data( 'Version' ),
-			true
+            'backwpup-notice',
+            untrailingslashit(\BackWPup::get_plugin_data('URL')) . sprintf('/assets/js/notice%s.js', $suffix),
+            ['underscore', 'jquery'],
+            (string) filemtime(untrailingslashit(\BackWPup::get_plugin_data('plugindir') . sprintf('/assets/js/notice%s.js', $suffix))),
+            true
         );
     }
 
