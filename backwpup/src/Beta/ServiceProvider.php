@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WPMedia\BackWPup\Tracking;
+namespace WPMedia\BackWPup\Beta;
 
 use BackWPup;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WPMedia\Mixpanel\Optin;
-use WPMedia\Mixpanel\TrackingPlugin;
+use WPMedia\Beta\Optin;
+use WPMedia\Beta\Beta;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -16,10 +16,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		Optin::class,
-		TrackingPlugin::class,
-		Tracking::class,
+		Beta::class,
 		Subscriber::class,
-		Notices::class,
 	];
 
 	/**
@@ -56,37 +54,22 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( TrackingPlugin::class )
+		$this->getContainer()->add( Beta::class )
 			->addArguments(
 				[
-					'517e881edc2636e99a2ecf013d8134d3',
-					BackWPup::get_plugin_data( 'version' ),
-					'wp media',
+					Optin::class,
+					\BackWPup::get_plugin_data( 'basename' ),
 					'backwpup',
+					\BackWPup::get_plugin_data( 'version' ),
 				]
 			);
 
-		$this->getContainer()->add( Tracking::class )
+		$this->getContainer()->add( Subscriber::class )
 			->addArguments(
 				[
-					$this->getContainer()->get( Optin::class ),
-					$this->getContainer()->get( TrackingPlugin::class ),
-					$this->getContainer()->get( 'option_adapter' ),
-				]
-			);
-
-		$this->getContainer()->add( Notices::class )
-			->addArguments(
-				[
-					$this->getContainer()->get( Optin::class ),
-				]
-			);
-
-		$this->getContainer()->addShared( Subscriber::class )
-			->addArguments(
-				[
-					$this->getContainer()->get( Tracking::class ),
-					$this->getContainer()->get( Notices::class ),
+					Optin::class,
+					Beta::class,
+					'backwpup_adapter',
 				]
 			);
 	}
