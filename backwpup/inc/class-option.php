@@ -19,7 +19,6 @@ final class BackWPup_Option
 		// general.
 		add_site_option( 'backwpup_cfg_showadminbar', true );
 		add_site_option( 'backwpup_cfg_showfoldersize', false );
-		add_site_option( 'backwpup_cfg_protectfolders', true );
 		add_site_option( 'backwpup_cfg_keepplugindata', false );
 		// job.
 		add_site_option( 'backwpup_cfg_jobmaxexecutiontime', 30 );
@@ -290,7 +289,6 @@ final class BackWPup_Option
 		$default['archivenamenohash']     = '%Y-%m-%d_%H-%i-%s_%hash%';
 		$default['archiveformat']         = get_site_option( 'backwpup_archiveformat', '.tar' );
 		$default['legacy']                = false;
-		$default['archiveencryption']     = false;
 		$default['tempjob']               = false;
 		$default['backup_now']            = false;
 		// defaults vor destinations.

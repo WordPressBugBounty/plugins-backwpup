@@ -273,10 +273,22 @@ final class BackWPup_Admin {
 		$jobtypes     = BackWPup::get_job_types();
 		$destinations = BackWPup::get_registered_destinations();
 
-        add_action('wp_ajax_backwpup_working', [\BackWPup_Page_Jobs::class, 'ajax_working']);
-        add_action('wp_ajax_backwpup_cron_text', [\BackWPup_Page_Editjob::class, 'ajax_cron_text']);
-        add_action('wp_ajax_backwpup_view_log', [\BackWPup_Page_Logs::class, 'ajax_view_log']);
-        add_action('wp_ajax_download_backup_file', [\BackWPup_Destination_Downloader::class, 'download_by_ajax']);
+		add_action(
+			'wp_ajax_backwpup_debug_info',
+			function () {
+				echo '<html lang="en"><head><title>' . esc_html__( 'Debug Information', 'backwpup' ) . '</title></head><body style="font-family:monospace;word-wrap: break-word;">';
+				$information = BackWPup_Page_Settings::get_information();
+				foreach ( $information as $item ) {
+					echo esc_html( trim( $item['label'] ) ) . ': ' . esc_html( trim( $item['value'] ) ) . "\n<br/>";
+				}
+				echo '</body></html>';
+				wp_die();
+			}
+			);
+		add_action( 'wp_ajax_backwpup_working', [ \BackWPup_Page_Jobs::class, 'ajax_working' ] );
+		add_action( 'wp_ajax_backwpup_cron_text', [ \BackWPup_Page_Editjob::class, 'ajax_cron_text' ] );
+		add_action( 'wp_ajax_backwpup_view_log', [ \BackWPup_Page_Logs::class, 'ajax_view_log' ] );
+		add_action( 'wp_ajax_download_backup_file', [ \BackWPup_Destination_Downloader::class, 'download_by_ajax' ] );
 
         foreach ($jobtypes as $id => $jobtypeclass) {
             add_action('wp_ajax_backwpup_jobtype_' . strtolower($id), [$jobtypeclass, 'edit_ajax']);
@@ -924,29 +936,33 @@ EOT;
      * @param $update_footer_text string
      *
      * @return string
-     */
-    public function update_footer($update_footer_text)
-    {
-        $default_text = $update_footer_text;
+	 */
+	public function update_footer( $update_footer_text ) {
+		$default_text = $update_footer_text;
+		$screen       = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
+		$screen_id    = ( $screen && isset( $screen->id ) ) ? (string) $screen->id : '';
 
-        if (isset($_REQUEST['page']) && strstr((string) $_REQUEST['page'], 'backwpup')) {
-			$update_footer_text = '<span class="backwpup-update-footer"><a href="' . __(
-					'http://backwpup.com',
-					'backwpup'
-				) . '">' . BackWPup::get_plugin_data( 'Name' ) . '</a> ' . sprintf(
-			// Translators: %s is the version number of the BackWPup plugin.
-			__(
-						'version %s',
-						'backwpup'
-					),
-					BackWPup::get_plugin_data( 'Version' )
-				) . '</span>';
+		if ( '' === $screen_id || false === strpos( $screen_id, 'backwpup' ) ) {
+			return $update_footer_text;
+		}
 
-            return $update_footer_text . $default_text;
-        }
+			ob_start();
+			do_action( 'backwpup_admin_footer_before_version' );
+			$before_version = ob_get_clean();
 
-        return $update_footer_text;
-    }
+			$update_footer_text =
+			$before_version .
+			'<span class="backwpup-update-footer">
+        <a href="' . esc_url( 'http://backwpup.com' ) . '">' . esc_html( BackWPup::get_plugin_data( 'Name' ) ) . '</a> ' .
+			sprintf(
+				// Translators: %s is the version number of the BackWPup plugin.
+			esc_html__( 'version %s', 'backwpup' ),
+					esc_html( BackWPup::get_plugin_data( 'Version' ) )
+				) .
+			'</span>';
+
+			return $update_footer_text . $default_text;
+	}
 
     /**
      *  Add filed for selecting user role in user section.
@@ -1071,7 +1087,20 @@ EOT;
         }
     }
 
+	/**
+	 * Initializes the plugin by setting up hooks, filters, and actions.
+	 *
+	 * This method ensures proper integration into the WordPress admin interface by adding menu pages,
+	 * registering scripts, handling form submissions, and updating relevant user profile fields.
+	 * It also manages various filters and actions required for the plugin to function, including
+	 * plugin links, admin-specific actions, and footer text customization.
+	 *
+	 * @return void
+	 */
 	public function init() {
+		if ( ! current_user_can( 'backwpup' ) ) {
+			return;
+		}
 		$restore = new Restore();
 		$restore->set_hooks()->init();
 
@@ -1194,6 +1223,7 @@ EOT;
 			'delete_job'             => rest_url( 'backwpup/v1/delete_job' ),
 			'backupslistingslength'  => 10,
 			'storages'               => rest_url( 'backwpup/v2/storages' ),
+			'messages'               => rest_url( 'backwpup/v2/messages' ),
 			'updates_backup_type'    => trailingslashit( rest_url( 'backwpup/v2/backups' ) ) . '%d/type',
 		];
 

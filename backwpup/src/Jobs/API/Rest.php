@@ -334,7 +334,9 @@ class Rest implements RestInterface {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'save_site_option' ],
-				'permission_callback' => [ $this, 'has_permission' ],
+				'permission_callback' => function () {
+					return current_user_can( 'backwpup_jobs_edit' ) || current_user_can( 'backwpup_settings' );
+				},
 			]
 		);
 
@@ -609,37 +611,48 @@ class Rest implements RestInterface {
 				$start_time = [ '*', $params['hourly_start_time'] ];
 			}
 
-			// Generate new cron expression based on the selected frequency and time settings.
-			$new_cron_expression = $this->cron_adapter->get_basic_cron_expression(
-				$frequency,
-				$start_time[0],
-				$start_time[1],
-				$day_of_week,
-				$day_of_month
-			);
-
-			// Update the cron expression in the job settings.
-			$this->option_adapter->update( $job_id, 'cron', $new_cron_expression );
-
-			// Re-schedule the job with the updated cron schedule.
-			$this->job_adapter->schedule_job( $job_id );
-
 			// Update frequency.
 			$this->option_adapter->update( $job_id, 'frequency', $frequency );
 
-			// Get the next scheduled execution time.
-			$cron_next = $this->cron_adapter->cron_next( $new_cron_expression );
+			if ( 'link' === $frequency ) {
+				$next_backup = __( 'External link', 'backwpup' );
+				// Update activetype.
+				$this->option_adapter->update( $job_id, 'activetype', $frequency );
 
-			// Prepare response with next backup schedule.
-			$return['next_backup'] = sprintf(
+			} else {
+				// Generate new cron expression based on the selected frequency and time settings.
+				$new_cron_expression = $this->cron_adapter->get_basic_cron_expression(
+					$frequency,
+					$start_time[0],
+					$start_time[1],
+					$day_of_week,
+					$day_of_month
+				);
+
+				// Update the cron expression in the job settings.
+				$this->option_adapter->update( $job_id, 'cron', $new_cron_expression );
+
+				// Re-schedule the job with the updated cron schedule.
+				$this->job_adapter->schedule_job( $job_id );
+
+				// Get the next scheduled execution time.
+				$cron_next = $this->cron_adapter->cron_next( $new_cron_expression );
+
+				// Update activetype.
+				$this->option_adapter->update( $job_id, 'activetype', 'wpcron' );
+
+				// Prepare response with next backup schedule.
+				$next_backup = sprintf(
 				// translators: %1$s = date, %2$s = time.
-				__( '%1$s at %2$s', 'backwpup' ),
-				wp_date( get_option( 'date_format' ), $cron_next ),
-				wp_date( get_option( 'time_format' ), $cron_next )
-			);
+					__( '%1$s at %2$s', 'backwpup' ),
+					wp_date( get_option( 'date_format' ), $cron_next ),
+					wp_date( get_option( 'time_format' ), $cron_next )
+				);
+			}
 
-			$return['status']  = 200;
-			$return['message'] = __('Job settings saved successfully.', 'backwpup'); // @phpcs:ignore
+			$return['next_backup'] = $next_backup;
+			$return['status']      = 200;
+			$return['message']     = __('Job settings saved successfully.', 'backwpup'); // @phpcs:ignore
 
 		} catch ( Exception $e ) {
 			// Handle errors.
@@ -773,6 +786,8 @@ class Rest implements RestInterface {
 	 * @param WP_REST_Request $request The REST request object containing the parameters.
 	 *
 	 * @return WP_REST_Response The response object containing the status and message.
+	 *
+	 * @throws \RuntimeException If an update of a site option is not allowed.
 	 */
 	public function save_site_option( WP_REST_Request $request ) {
 		$params = $request->get_params();
@@ -780,6 +795,14 @@ class Rest implements RestInterface {
 		$status = 200;
 		try {
 			foreach ( $params as $key => $values ) {
+				if ( strpos( $key, 'backwpup' ) !== 0 || in_array( $key, [ 'backwpup_jobs', 'backwpup_version', 'backwpup_previous_version', 'backwpup_messages' ], true ) ) {
+					// translators: %s = site option name.
+					throw new \RuntimeException( sprintf( __( 'Update of site option with name is "%s" not allowed!', 'backwpup' ), $key ) );
+				}
+				if ( ! is_array( $values ) || ! array_key_exists( 'value', $values ) ) {
+					// translators: %s = site option name.
+					throw new \RuntimeException( sprintf( __( 'Invalid data format for site option "%s".', 'backwpup' ), $key ) );
+				}
 				if ( '' !== trim( $values['value'] ) ) {
 					$value = sanitize_text_field( $values['value'] );
 					if ( isset( $values['secure'] ) && true === filter_var( $values['secure'], FILTER_VALIDATE_BOOLEAN ) ) {

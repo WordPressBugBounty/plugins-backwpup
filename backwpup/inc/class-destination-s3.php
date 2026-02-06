@@ -15,6 +15,12 @@ use BackWPup\Utils\BackWPupHelpers;
  */
 class BackWPup_Destination_S3 extends BackWPup_Destinations
 {
+	/**
+	 * Service name
+	 * @var string
+	 */
+	private const SERVICE_NAME = 'S3';
+
     public function option_defaults(): array
     {
         return [
@@ -228,7 +234,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 						BackWPup_Option::update(
 							$jobid,
 							's3maxbackups',
-							!empty($_POST['s3maxbackups']) ? absint($_POST['s3maxbackups']) : 0
+							isset($_POST['s3maxbackups']) && is_numeric($_POST['s3maxbackups']) ? absint($_POST['s3maxbackups']) : $this->option_defaults()['s3maxbackups']
 						);
 						BackWPup_Option::update($jobid, 's3syncnodelete', !empty($_POST['s3syncnodelete']));
 				}
@@ -314,16 +320,6 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
         }
 
         set_site_transient('backwpup_' . strtolower($jobdest), $files, YEAR_IN_SECONDS);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function file_get_list(string $jobdest): array
-    {
-        $list = (array) get_site_transient('backwpup_' . strtolower($jobdest));
-
-        return array_filter($list);
     }
 
     /**
@@ -764,7 +760,7 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 						s3base_signature      : $( 'input[name="s3base_signature"]' ).val(),
 						s3base_multipart      : $( 'input[name="s3base_multipart"]' ).is(':checked'),
 						s3base_pathstylebucket      : $( 'input[name="s3base_pathstylebucket"]' ).is(':checked'),
-						_ajax_nonce     : $( '#backwpupajaxnonce' ).val()
+						_ajax_nonce     : $( 'input[name="backwpupajaxnonce"]' ).val()
 					};
 					$.post( ajaxurl, data, function ( response ) {
 						$( '#s3bucketContainer').html(response);
@@ -782,4 +778,11 @@ class BackWPup_Destination_S3 extends BackWPup_Destinations
 		</script>
 		<?php
     }
+
+	/**
+	 * Get service name
+	 */
+	public function get_service_name(): string {
+		return self::SERVICE_NAME;
+	}
 }

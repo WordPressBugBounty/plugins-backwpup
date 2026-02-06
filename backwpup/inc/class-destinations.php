@@ -140,10 +140,32 @@ abstract class BackWPup_Destinations
         $downloader->handle();
     }
 
-    public function file_get_list(string $jobdest): array
-    {
-        return [];
-    }
+	/**
+	 * Get the list of files for the job.
+	 *
+	 * @param string $jobdest The job destination identifier.
+	 * @return array
+	 */
+	public function file_get_list( string $jobdest ): array {
+		$key  = 'backwpup_' . strtolower( $jobdest );
+		$list = get_site_transient( $key );
+
+		if ( false === $list ) {
+			// Legacy compatibility (e.g. Glacier history stored in options).
+			$list = get_site_option( $key, [] );
+		}
+
+		$files = array_filter( (array) $list );
+
+		// Disable auto downloading for onedrive during restoration see #1239 on Github.
+		if ( BackWPup::is_pro() && $this->get_service_name() !== 'OneDrive' ) {
+			$file_list = new BackWPup_Pro_Destinations();
+
+			return $file_list->file_get_list( $jobdest, $files, $this->get_service_name() );
+		}
+
+		return $files;
+	}
 
     abstract public function job_run_archive(BackWPup_Job $job_object): bool;
 
@@ -234,6 +256,15 @@ abstract class BackWPup_Destinations
 		if ( BackWPup::is_pro() ) {
 			$destinations = array_merge( $destinations, BackWPup_Pro_Destinations::get_destinations() );
 		}
+
+		$checked_destinations = \BackWPup::get_registered_destinations();
+		foreach ( $destinations as $key => $destination ) {
+			$error = $checked_destinations[ $destination['slug'] ]['error'];
+			if ( $error ) {
+				$destinations[ $key ]['deactivated_message'] = $error;
+			}
+		}
+
 		return $destinations;
 	}
 
@@ -248,4 +279,9 @@ abstract class BackWPup_Destinations
 	public function remove_file_history_from_database( array $files, string $destination ): void {
 		do_action( 'backwpup_after_delete_backups', $files, $destination );
 	}
+
+	/**
+	 * Implement this to return the service name for this destination.
+	 */
+	abstract public function get_service_name(): string;
 }

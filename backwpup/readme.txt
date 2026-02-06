@@ -1,202 +1,265 @@
-=== BackWPup – WordPress Backup & Restore Plugin === 
+=== BackWPup – WordPress Backup & Restore Plugin ===
 
 Contributors: backwpup, wp_rocket, imagify, nullbyte, cocreation, danielhuesken, wido
-Tags: backup, restore, cloud backup, database backup, wordpress backup 
+Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 5.5.0
+Stable tag: 5.6.5
 License: GPLv2+
 
-Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin! 
+Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
 
-  
 
-== Description == 
+
+== Description ==
 
 [BackWPup](https://backwpup.com/) is the most comprehensive backup & restore plugin for WordPress.
- 
-= 🎉 BackWPup 5.5– New Features & Improvements = 
 
-BackWPup 5.5 is now available! Building on previous releases, it brings back your most‑requested features and delivers a refreshed, more controlled backup experience—shaped by your feedback. 
+= 🎉 BackWPup 5.5– New Features & Improvements =
 
- 
-🚀 What’s new in BackWPup? 
+BackWPup 5.5 is now available! Building on previous releases, it brings back your most‑requested features and delivers a refreshed, more controlled backup experience—shaped by your feedback.
 
-✅ Archive format per backup: Pick the archive type for each backup (ZIP, TAR, etc.) to match your storage and restore needs. 
+
+🚀 What’s new in BackWPup?
+
+✅ Archive format per backup: Pick the archive type for each backup (ZIP, TAR, etc.) to match your storage and restore needs.
 
 ✅ Archive name per backup: Give each backup a clear, custom filename so they are easy to recognize at a glance.
- 
+
 If you happen to experience any issues with the new version, contact us directly [here](https://backwpup.com/contact) so we can investigate your case. We are committed to resolving any concerns quickly and are actively working to ensure a smooth experience for everyone.
 
-How It Works: The 3-Step Backup Wizard   
+How It Works: The 3-Step Backup Wizard
 
-* **What** - Choose your backup contents through our intuitive setup wizard 
+* **What** - Choose your backup contents through our intuitive setup wizard
 
-* **When** - Set your backup schedule (hourly, daily, weekly, or monthly) 
+* **When** - Set your backup schedule (hourly, daily, weekly, or monthly)
 
-* **Where** - Select your preferred storage destination(s) 
+* **Where** - Select your preferred storage destination(s)
 
-Create comprehensive backups and restore your data with ease! 
+Create comprehensive backups and restore your data with ease!
 
- 
 
-= 🌟 The Best WordPress Backup & Restore Plugin = 
 
-Easily create a complete WordPress backup, store it on external services (such as **Dropbox**, **S3**, **FTP**, **Google Drive**, **OneDrive** and more) and restore your backup directly from your WordPress admin, in just a few clicks. 
+= 🌟 The Best WordPress Backup & Restore Plugin =
 
-BackWPup is designed for ease of use. Even beginners can create a reliable backup of their WordPress sites with just a few clicks.  With BackWPup, you can enjoy peace of mind knowing your data is safe and secure. Whether you are a small business owner or managing a large enterprise, BackWPup is the ultimate solution for protecting your WordPress site.   
+Easily create a complete WordPress backup, store it on external services (such as **Dropbox**, **S3**, **FTP**, **Google Drive**, **OneDrive** and more) and restore your backup directly from your WordPress admin, in just a few clicks.
 
-  
+BackWPup is designed for ease of use. Even beginners can create a reliable backup of their WordPress sites with just a few clicks.  With BackWPup, you can enjoy peace of mind knowing your data is safe and secure. Whether you are a small business owner or managing a large enterprise, BackWPup is the ultimate solution for protecting your WordPress site.
 
-= 💎 BackWPup Pro Features =  
 
-Take your WordPress backups to the next level with BackWPup Pro. Get additional features like:  
 
-* Additional Cloud Storage options (Amazon Glacier, Google Drive, OneDrive, HiDrive). 
+= 💎 BackWPup Pro Features =
 
-* Encrypted backups for enhanced security  
+Take your WordPress backups to the next level with BackWPup Pro. Get additional features like:
 
-* Custom API keys for Dropbox and SugarSync	 
+* Additional Cloud Storage options (Amazon Glacier, Google Drive, OneDrive, HiDrive).
 
-* Standalone restore application for recovery without WordPress access 
+* Encrypted backups for enhanced security
 
-* Seamless site migration by restoring to a new URL with BackWPup. 
+* Custom API keys for Dropbox and SugarSync
 
-* Premium support with dedicated ticket system 
+* Standalone restore application for recovery without WordPress access
 
-* And much more! 
+* Seamless site migration by restoring to a new URL with BackWPup.
 
-**[Get BackWPup Pro](https://backwpup.com/#buy)** for the complete backup and restore solution. 
+* Premium support with dedicated ticket system
 
- 
+* And much more!
 
-= ⏰ Schedule and Manage Backups Easily = 
+**[Get BackWPup Pro](https://backwpup.com/#buy)** for the complete backup and restore solution.
 
-With BackWPup, you have full control over your backup process. You can back up your entire WordPress site, including files and database, save them to multiple locations, and easily restore your site from a backup if anything goes wrong. You can choose what to back up, how often to perform backups, and where to store them: 
 
-* Comprehensive Backups: Backup your entire WordPress installation, including the /wp-content/ folder, database and any additional non-WordPress files and folders. 
 
-* Flexible Scheduling: Schedule automatic backups to run hourly, daily, weekly, monthly —with the freedom to pick any specific date in the month 
+= ⏰ Schedule and Manage Backups Easily =
 
-* Immediate Backups: Instantly run any scheduled backup job with the “Backup Now” button—perfect for on-demand backups before updates or changes.   
+With BackWPup, you have full control over your backup process. You can back up your entire WordPress site, including files and database, save them to multiple locations, and easily restore your site from a backup if anything goes wrong. You can choose what to back up, how often to perform backups, and where to store them:
 
-* Custom Backup Jobs: Combine files and database into a single job, or set up separate jobs for advanced workflows. 
+* Comprehensive Backups: Backup your entire WordPress installation, including the /wp-content/ folder, database and any additional non-WordPress files and folders.
 
-* Store your backup in different locations: 
-> **Free version**: Dropbox, Amazon S3, FTP, Rackspace Cloud, Microsoft Azure, SugarSync.  
-> **Pro version**: Additional storage options including Amazon Glacier, Google Drive, OneDrive and HiDrive **[Get BackWPup Pro](https://backwpup.com/#buy)** 
+* Flexible Scheduling: Schedule automatic backups to run hourly, daily, weekly, monthly —with the freedom to pick any specific date in the month
 
-This flexibility makes BackWPup the best choice for WordPress backup. 
-  
+* Immediate Backups: Instantly run any scheduled backup job with the “Backup Now” button—perfect for on-demand backups before updates or changes.
 
+* Custom Backup Jobs: Combine files and database into a single job, or set up separate jobs for advanced workflows.
 
-= 🛟 Easily Restore Your WordPress Site = 
+* Store your backup in different locations:
+> **Free version**: Dropbox, Amazon S3, FTP, Rackspace Cloud, Microsoft Azure, SugarSync.
+> **Pro version**: Additional storage options including Amazon Glacier, Google Drive, OneDrive and HiDrive **[Get BackWPup Pro](https://backwpup.com/#buy)**
 
-Restore your site effortlessly from a backup with our **one-click restore option**. To restore a backup, go to the BackWPup plugin settings in your WordPress admin area. Select the backup you wish to restore, click on the three dots menu and click ‘Restore Full Backup’. And the restore is done. This feature ensures that even in the event of data loss or site issues, you can quickly and efficiently restore your site to its previous state. 
+This flexibility makes BackWPup the best choice for WordPress backup.
 
-**Access-Free Recovery** 
-Locked out of your dashboard? No problem. The standalone restore app on the Pro version lets you restore your site from any backup, even when you can’t access WordPress. Perfect for emergencies. **[Get BackWPup Pro](https://backwpup.com/#buy)** 
 
- 
 
-= ⚡ Improve Your Site’s Reliability and Performance =  
+= 🛟 Easily Restore Your WordPress Site =
 
-Did you know that regular backups and database maintenance can improve the performance and reliability of your WordPress site? With BackWPup, you can ensure that your data is always protected and that your site is always running smoothly.  
+Restore your site effortlessly from a backup with our **one-click restore option**. To restore a backup, go to the BackWPup plugin settings in your WordPress admin area. Select the backup you wish to restore, click on the three dots menu and click ‘Restore Full Backup’. And the restore is done. This feature ensures that even in the event of data loss or site issues, you can quickly and efficiently restore your site to its previous state.
 
-By scheduling regular backups and database maintenance, you can avoid data loss and downtime. BackWPup makes it easy to protect your data and keep your site running at its best.  
+**Access-Free Recovery**
+Locked out of your dashboard? No problem. The standalone restore app on the Pro version lets you restore your site from any backup, even when you can’t access WordPress. Perfect for emergencies. **[Get BackWPup Pro](https://backwpup.com/#buy)**
 
-Even Google recommends regular backups and database maintenance to ensure the reliability and performance of your site. With BackWPup, you can follow best practices and keep your site secure and reliable.  
 
-   
 
-= 😎 Easy Migration =    
+= ⚡ Improve Your Site’s Reliability and Performance =
 
-BackWPup makes migrating your WordPress site simple. Whether you’re switching hosts or moving to a new server, easily export your files and database, then restore everything with just a few clicks—quick and hassle-free. Available only on the Pro version - **[Get BackWPup Pro](https://backwpup.com/#buy)** 
+Did you know that regular backups and database maintenance can improve the performance and reliability of your WordPress site? With BackWPup, you can ensure that your data is always protected and that your site is always running smoothly.
 
-  
+By scheduling regular backups and database maintenance, you can avoid data loss and downtime. BackWPup makes it easy to protect your data and keep your site running at its best.
 
-= ❓ Is BackWPup Free? =  
+Even Google recommends regular backups and database maintenance to ensure the reliability and performance of your site. With BackWPup, you can follow best practices and keep your site secure and reliable.
 
- You can use BackWPup for free with all its basic features. The free version includes complete backup, scheduling, support for external storage services (like Dropbox, S3, FTP, and more) and restore.  
 
- The pro version offers many additional features including more settings, destinations, and of course access to our premium support. Check out our premium plans: [https://backwpup.com/#buy](https://backwpup.com/#buy)  
 
-  
+= 😎 Easy Migration =
 
-= ℹ️ Who Are We? =  
+BackWPup makes migrating your WordPress site simple. Whether you’re switching hosts or moving to a new server, easily export your files and database, then restore everything with just a few clicks—quick and hassle-free. Available only on the Pro version - **[Get BackWPup Pro](https://backwpup.com/#buy)**
 
- We are [WP Media](https://wp-media.me/), the company behind WP Rocket, the best performance plugin for WordPress.   
 
- Our mission is to improve the web. We are making it faster with [WP Rocket](https://wp-rocket.me/), lighter with [Imagify](https://imagify.io) and safer with [BackWPup](https://backwpup.com/).  
 
-   
+= ❓ Is BackWPup Free? =
 
-= 👋 Get in Touch! =   
+ You can use BackWPup for free with all its basic features. The free version includes complete backup, scheduling, support for external storage services (like Dropbox, S3, FTP, and more) and restore.
 
-* Website: [backwpup.com](https://backwpup.com/)  
-* Contact Us: [https://backwpup.com/contact/](https://backwpup.com/contact/)  
+ The pro version offers many additional features including more settings, destinations, and of course access to our premium support. Check out our premium plans: [https://backwpup.com/#buy](https://backwpup.com/#buy)
 
 
-= 🔌 Related Plugins =  
 
- * [WP Rocket: The best performance plugin](https://wp-rocket.me/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=backwpupplugin) to speed up your WordPress website.  
+= ℹ️ Who Are We? =
 
- * [Imagify: The best image optimization plugin](https://imagify.io/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=backwpupplugin) to speed up your website with lighter images.  
+ We are [WP Media](https://wp-media.me/), the company behind WP Rocket, the best performance plugin for WordPress.
 
- * [Lazy Load](https://wordpress.org/plugins/rocket-lazy-load/): The best Lazy Load script to reduce the number of HTTP requests and improve the website's loading time.  
+ Our mission is to improve the web. We are making it faster with [WP Rocket](https://wp-rocket.me/), lighter with [Imagify](https://imagify.io) and safer with [BackWPup](https://backwpup.com/).
 
- * [Heartbeat Control by WP Rocket](https://wordpress.org/plugins/heartbeat-control/): Heartbeat Control by WP Rocket: The best plugin to control the WordPress Heartbeat API and reduce CPU usage.  
 
- * [RocketCDN: The best CDN plugin for WordPress](https://rocketcdn.me/wordpress/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=backwpupplugin) to propel your content at the speed of light – no matter where your users are located in the world.  
 
- * [Increase Max upload file size](https://wordpress.org/plugins/upload-max-file-size/): The best plugin to increase the upload file size limit to any value with one click.  
+= 👋 Get in Touch! =
 
-  
+* Website: [backwpup.com](https://backwpup.com/)
+* Contact Us: [https://backwpup.com/contact/](https://backwpup.com/contact/)
 
-  
 
-License: GPLv2 or later  
+= 🔌 Related Plugins =
 
-License URI: http://www.gnu.org/licenses/gpl-2.0.html  
+ * [WP Rocket: The best performance plugin](https://wp-rocket.me/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=backwpupplugin) to speed up your WordPress website.
 
-  
-== Installation ==  
+ * [Imagify: The best image optimization plugin](https://imagify.io/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=backwpupplugin) to speed up your website with lighter images.
 
-= WordPress Admin Method =  
+ * [Lazy Load](https://wordpress.org/plugins/rocket-lazy-load/): The best Lazy Load script to reduce the number of HTTP requests and improve the website's loading time.
 
- 1. Go to you administration area in WordPress `Plugins > Add`  
- 2. Look for `BackWPup` (use search form)  
- 3. Click on Install and activate the plugin  
+ * [Heartbeat Control by WP Rocket](https://wordpress.org/plugins/heartbeat-control/): Heartbeat Control by WP Rocket: The best plugin to control the WordPress Heartbeat API and reduce CPU usage.
 
-= FTP Method =  
+ * [RocketCDN: The best CDN plugin for WordPress](https://rocketcdn.me/wordpress/?utm_source=wordpress.org&utm_medium=referral&utm_campaign=backwpupplugin) to propel your content at the speed of light – no matter where your users are located in the world.
 
- 1. Upload the complete `backwpup` folder to the `/wp-content/plugins/` directory  
- 2. Activate the plugin through the 'Plugins' menu in WordPress  
+ * [Increase Max upload file size](https://wordpress.org/plugins/upload-max-file-size/): The best plugin to increase the upload file size limit to any value with one click.
 
-  
 
-= Pro Version =  
 
- [You can find a detailed tutorial in the BackWPup documentation]. (https://backwpup.com/docs/install-backwpup-pro-activate-licence/)  
 
-== Screenshots == 
 
-1. WHAT - Choose your backup contents through our intuitive setup wizard 
-2. WHEN - Set your backup schedule (hourly, daily, weekly, or monthly) 
-3. WHERE - Select your preferred storage destination(s) 
-4. Configure all your backup settings 
+License: GPLv2 or later
+
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+
+== Installation ==
+
+= WordPress Admin Method =
+
+ 1. Go to you administration area in WordPress `Plugins > Add`
+ 2. Look for `BackWPup` (use search form)
+ 3. Click on Install and activate the plugin
+
+= FTP Method =
+
+ 1. Upload the complete `backwpup` folder to the `/wp-content/plugins/` directory
+ 2. Activate the plugin through the 'Plugins' menu in WordPress
+
+
+
+= Pro Version =
+
+ [You can find a detailed tutorial in the BackWPup documentation]. (https://backwpup.com/docs/install-backwpup-pro-activate-licence/)
+
+== Screenshots ==
+
+1. WHAT - Choose your backup contents through our intuitive setup wizard
+2. WHEN - Set your backup schedule (hourly, daily, weekly, or monthly)
+3. WHERE - Select your preferred storage destination(s)
+4. Configure all your backup settings
 5. Add new backup, backup history, next scheduled backups all in one place
-6. Content selector to exclude or include files for backups 
-7. Storage settings to select location to store backups 
+6. Content selector to exclude or include files for backups
+7. Storage settings to select location to store backups
 
- 
+
 
 == Changelog ==
-5.5 Release date: September ??, 2025 
+= 5.6.5 =
+Release date: February 05, 2026
 
-*New Feature: Archive format per backup 
-*New Feature: Archive name per backup 
+* New Feature: Introduced support tool chatbot for user assistance.
+
+= 5.6.4 =
+Release date: January 20, 2026
+
+* Fix: Plugin update mechanism not working properly for Pro version since 5.6.2
+
+= 5.6.3 =
+Release date: January 20, 2026
+
+* Fix: Backups stored on Amazon Glacier were not listed correctly.
+* Fix: When restoring multiple backups consecutively, the previously selected backup was restored instead of the intended one.
+* Fix: No error message was shown when an FTP error occurred during backup or restore.
+* Fix: Fatal error occurring on Kinsta-hosted environments.
+* Fix: Re-enabled automatic folder protection to prevent backup directories from being publicly accessible.
+* Enhancement: Cache is now flushed after database restore to ensure restored data is properly reflected.
+* Security: Fixed a security vulnerability (CVE-2025-15041).
+
+= 5.6.2 =
+Release date: January 07, 2026
+
+* Fix: Improved validation for the “Max backups to retain” setting to prevent incorrect values.
+* Pro enhancement: Improved license management and added an in-plugin notification to alert users about license status changes.
+
+= 5.6.1 =
+Release date: December 11, 2025
+
+* Fix: Legacy backup job links stopped working after upgrading from version 5.6.0.
+* Fix: Storage configuration was failing for multiple storage providers (Amazon S3, Amazon Glacier, Azure Storage, Google Cloud Storage, OneDrive, Rackspace).
+* Added: Compatibility for legacy backup job link formats to ensure older jobs continue to work without any changes.
+
+= 5.6.0 =
+Release date: November 25, 2025
+
+* Enhancement: Introduced WP-CLI support for running backups
+* Enhancement: Improved Mixpanel event tracking accuracy
+* Added support for triggering backups via link
+* Fix: Resolved a compatibility issue with Visual Composer
+
+= 5.5.2 =
+Release date: November 03, 2025
+
+* Security fix: Safe handling of job attributes concatenated into HTML attributes on the admin UI
+* Enhancement: Compatibility with Kinsta hosting with backup rate limits
+* Enhancement: Better handling of missing PHP cURL extension
+* Enhancement: Improved upload of large backups on HiDrive
+* Enhancement: Facilitated diagnosis for support with dedicated tooling
+* Fix: Consistently displaying the "Help Us Improve BackWPup!" notice
+
+= 5.5.1 =
+Release date: October 20, 2025
+
+* Security Fix: Missing Authorization to Sensitive Information Exposure
+* Fix: HiDrive backup download partially not working.
+* Fix: HiDrive backup not working properly due to major storage issue.
+* Fix: Compatibility issue with .donotbackup file and open_basedir environments.
+* Fix: Minor UX issues when including files in backups.
+* Fix: OneDrive allow users to reauthenticate.
+
+= 5.5.0 =
+Release date: September 16, 2025
+
+* New Feature: Archive format per backup
+* New Feature: Archive name per backup
 
 5.4.1 Release date: September 2, 2025
 
@@ -389,12 +452,12 @@ Release date: feb 04, 2025
 * Fixed : Css issues with the new UI
 
 = Version 5.0 =
-Release date: Feb 04, 2025 
+Release date: Feb 04, 2025
 
-* Complete revamp of the plugin UI 
-* Changed: Updated dependencies 
-* Moved Jobs, Logs, Network, license & settings under Advance Settings  
-* Removed: Jobs, Logs, Backups, Add new job, Settings, Restore & About from the plugin menu 
+* Complete revamp of the plugin UI
+* Changed: Updated dependencies
+* Moved Jobs, Logs, Network, license & settings under Advance Settings
+* Removed: Jobs, Logs, Backups, Add new job, Settings, Restore & About from the plugin menu
 
 = 4.1.7 =
 Release date: nov 25, 2024
@@ -726,3 +789,4 @@ Release Date: May 16, 2018
 
 * Added: Restore for pro version
 * Fixed: stylesheet was being included on frontend
+No newline at end of file

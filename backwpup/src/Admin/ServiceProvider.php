@@ -5,6 +5,7 @@ namespace WPMedia\BackWPup\Admin;
 
 use BackWPup;
 use WPMedia\BackWPup\Admin\Beacon\Beacon;
+use WPMedia\BackWPup\Admin\Messages\API\Rest;
 use WPMedia\BackWPup\Admin\Notices\Notices;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice52;
 use WPMedia\BackWPup\Admin\Notices\Notices\Notice522;
@@ -15,8 +16,10 @@ use WPMedia\BackWPup\Admin\Notices\Notices\Notice513;
 use Inpsyde\BackWPup\Notice\NoticeView;
 use WPMedia\BackWPup\Admin\Settings\Subscriber as SettingSubscriber;
 use WPMedia\BackWPup\Admin\Frontend\Subscriber as AdminFrontendSubscriber;
+use WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsStore;
 use WPMedia\BackWPup\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WPMedia\BackWPup\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WPMedia\Mixpanel\Optin;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -30,6 +33,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		SettingSubscriber::class,
 		AdminFrontendSubscriber::class,
 		'options',
+		\WPMedia\BackWPup\Admin\Messages\API\Subscriber::class,
+		\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class,
+		\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class,
+		\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class,
 	];
 
 	/**
@@ -41,6 +48,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		SettingSubscriber::class,
 		'notice_subscriber',
 		AdminFrontendSubscriber::class,
+		\WPMedia\BackWPup\Admin\Messages\API\Subscriber::class,
+		\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class,
+		\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class,
+		\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class,
 	];
 
 	/**
@@ -117,6 +128,11 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( Notices\NoticeMissingCurl::ID . '_view', NoticeView::class )
+			->addArgument( Notices\NoticeMissingCurl::ID );
+		$this->getContainer()->addShared( Notices\NoticeMissingCurl::class, Notices\NoticeMissingCurl::class )
+			->addArgument( Notices\NoticeMissingCurl::ID . '_view' );
+
 		// Register the Subscriber with an array of notice instances.
 		$this->getContainer()->addShared( 'notice_subscriber', NoticeSubscriber::class )
 			->addArguments(
@@ -127,6 +143,7 @@ class ServiceProvider extends AbstractServiceProvider {
 						$this->getContainer()->get( 'notice_52' ),
 						$this->getContainer()->get( 'notice_513' ),
 						$this->getContainer()->get( 'notice_datacorrupted' ),
+						$this->getContainer()->get( Notices\NoticeMissingCurl::class ),
 					],
 				]
 				);
@@ -137,6 +154,76 @@ class ServiceProvider extends AbstractServiceProvider {
 					'backwpup_adapter',
 				]
 			);
+		$this->getContainer()->addShared( Rest::class );
+		$this->getContainer()->addShared( \WPMedia\BackWPup\Admin\Messages\API\Subscriber::class )
+			->addArguments(
+				[
+					Rest::class,
+				]
+			);
+
+		$this->getContainer()->addShared(
+			'error_signals_store',
+			\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsStore::class
+		);
+
+		$this->getContainer()->addShared(
+			'mixpanel_optin',
+			Optin::class
+			)->addArguments(
+				[
+					'backwpup',
+					'manage_options',
+				]
+			);
+
+		$this->getContainer()->addShared(
+			'chatbot_context_snapshot_builder',
+			\WPMedia\BackWPup\Admin\Chatbot\ContextSnapshotBuilder::class
+		)->addArguments(
+			[
+				'backwpup_adapter',
+				'error_signals_store',
+				'mixpanel_optin',
+			]
+			);
+
+		$this->getContainer()->addShared(
+			\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRest::class
+		)->addArguments(
+			[
+				'chatbot_context_snapshot_builder',
+			]
+		);
+
+		$this->getContainer()->addShared(
+			\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRestSubscriber::class
+		)->addArguments(
+			[
+				\WPMedia\BackWPup\Admin\Chatbot\API\ChatbotRest::class,
+			]
+		);
+
+		$this->getContainer()->addShared( \WPMedia\BackWPup\Admin\Chatbot\Chatbot::class )
+			->addArguments(
+				[
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/chatbot' ),
+					'chatbot_context_snapshot_builder',
+				]
+			);
+
+		$this->getContainer()->addShared(
+			\WPMedia\BackWPup\Admin\Chatbot\ChatbotSubscriber::class
+		)->addArguments(
+			[
+				'backwpup_adapter',
+				\WPMedia\BackWPup\Admin\Chatbot\Chatbot::class,
+			]
+		);
+
+		$this->getContainer()->addShared(
+			\WPMedia\BackWPup\Common\ErrorSignals\ErrorSignalsSubscriber::class
+		)->addArgument( 'error_signals_store' );
 	}
 
 	/**

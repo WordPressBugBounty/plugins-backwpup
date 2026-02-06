@@ -3,11 +3,22 @@
 /**
  * Class BackWPup_Destination_Folder.
  */
-class BackWPup_Destination_Folder extends BackWPup_Destinations
-{
-    public function option_defaults(): array
-    {
-        $backups_dir = self::getDefaultBackupsDirectory();
+class BackWPup_Destination_Folder extends BackWPup_Destinations {
+
+	/**
+	 * Service name
+	 *
+	 * @var string
+	 */
+	private const SERVICE_NAME = 'Folder';
+
+	/**
+	 * Option defaults
+	 *
+	 * @return array
+	 */
+	public function option_defaults(): array {
+		$backups_dir = self::getDefaultBackupsDirectory();
 
         return ['maxbackups' => 15, 'backupdir' => $backups_dir, 'backupsyncnodelete' => true];
     }
@@ -27,8 +38,8 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
             $backup_dir = self::getDefaultBackupsDirectory();
         }
 
-		$max_backups    = isset( $_POST['maxbackups'] ) ? absint( $_POST['maxbackups'] ) : 0; // phpcs:ignore WordPress.Security.NonceVerification.Missing
-				$jobids = (array) $jobid;
+		$max_backups = isset( $_POST['maxbackups'] ) && is_numeric( $_POST['maxbackups'] ) ? absint( $_POST['maxbackups'] ) : $this->option_defaults()['maxbackups']; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		$jobids      = (array) $jobid;
 		foreach ( $jobids as $jobid ) {
 			BackWPup_Option::update( $jobid, 'backupdir', $backup_dir );
 			BackWPup_Option::update( $jobid, 'maxbackups', $max_backups );
@@ -52,9 +63,12 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
 
         $backupfile = realpath(trailingslashit($backup_dir) . basename($backupfile));
 
-        if ($backupfile && is_writeable($backupfile) && !is_dir($backupfile) && !is_link($backupfile)) {
-            unlink($backupfile);
-        }
+		if ( $backupfile && is_writable( $backupfile ) && ! is_dir( $backupfile ) && ! is_link( $backupfile ) ) { //phpcs:ignore
+			wp_delete_file( $backupfile );
+		} else {
+			// translators: %s: backup file path.
+			\BackWPup_Admin::message( sprintf( __( 'Could not delete backup archive "%s", check permissions!', 'backwpup' ), $backupfile ), true );
+		}
     }
 
     /**
@@ -240,4 +254,11 @@ class BackWPup_Destination_Folder extends BackWPup_Destinations
 
         return str_replace($content_path, '', $backups_dir);
     }
+
+	/**
+	 * Get service name
+	 */
+	public function get_service_name(): string {
+		return self::SERVICE_NAME;
+	}
 }

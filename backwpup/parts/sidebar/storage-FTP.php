@@ -113,8 +113,9 @@ $ftpmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'ftpmaxbackups', 15));
       "identifier" => "ftpssl",
 			"disabled" => !function_exists('ftp_ssl_connect'),
       "checked" => BackWPup_Option::get($job_id, 'ftpssl', false),
-      "label" => __("Use explicit SSL-FTP connexion", 'backwpup'),
+      "label" => __("Use explicit SSL-FTP connection", 'backwpup'),
 			"tooltip" => __("This option is only available if your server supports SSL connections.", 'backwpup'),
+      "tooltip_pos" => "left"
     ]);
     ?>
 
@@ -155,10 +156,9 @@ $ftpmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'ftpmaxbackups', 15));
       "name" => "ftpmaxbackups",
       "identifier" => "ftpmaxbackups",
       "type" => "number",
-      "min" => 1,
+      "min" => 0,
       "label" => __("Max backups to retain", 'backwpup'),
       "value" => $ftpmaxbackups,
-      "required" => true,
     ]);
     ?>
 
@@ -166,7 +166,7 @@ $ftpmaxbackups = esc_attr(BackWPup_Option::get($job_id, 'ftpmaxbackups', 15));
     BackWPupHelpers::component("alerts/info", [
       "type" => "alert",
       "font" => "xs",
-      "content" => __("When this limit is exceeded, the oldest backup will be deleted.", 'backwpup'),
+      "content" => __("Limits the number of stored backups. When exceeded, the oldest backup is removed. Setting this to 0 keeps unlimited backups and may increase storage usage.", 'backwpup'),
     ]);
     ?>
 
