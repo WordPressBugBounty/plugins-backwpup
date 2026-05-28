@@ -5,7 +5,7 @@ Tags: backup, restore, cloud backup, database backup, wordpress backup
 Requires at least: 4.9
 Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 5.6.9
+Stable tag: 5.6.10
 License: GPLv2+
 
 Create a complete WordPress backup easily. Schedule automatic backups, store securely, and restore effortlessly with the best WordPress backup plugin!
@@ -193,16 +193,37 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 
 == Changelog ==
+= 5.6.10 =
+Release date: May 28, 2026
+
+* Enhancement: Aligned backup history timestamps with WordPress timezone.
+* Enhancement: Improved FTP and SFTP failure clarity in backup logs.
+* Enhancement: Expanded Dropbox error mapping and failure reason coverage.
+* Enhancement: Added backup path visibility in logs.
+* Enhancement: Expanded Google Drive error mapping and failure reason coverage.
+* Enhancement: Added descriptive empty-state text when no backup is available.
+* Enhancement: Expanded OneDrive error mapping and failure reason coverage.
+* Enhancement: Expanded Microsoft Azure Blob Storage failure scenario coverage.
+* Enhancement: Added explicit feedback when authentication credentials are invalid.
+* Enhancement: Improved abort flow behavior and user feedback.
+* Enhancement: Improved overall UI and accessibility consistency across the plugin.
+* Fix: Fixed backup history pagination issues.
+* Fix: Prevented fatal TypeError in WXR export on PHP 8.4 with nullable meta values.
+* Fix: Fixed backup download behavior on mobile devices.
+* Fix: Fixed incomplete cron cleanup when changing or deleting job schedules.
+* Fix: Fixed backup creation flow that could stall on large sites.
+* Fix: Prevented WP Super Cache from being unnecessarily disabled during backup jobs.
+
 = 5.6.9 =
 Release date: April 27, 2026
 
 * Fix: Resolved memory limit errors during some database backups.
 * Fix: Prevented restore page from hanging in certain edge cases during archive processing.
 * Fix: Corrected failed backup status reporting for SugarSync when quota limits are reached.
-* Fix: Improved backup history by including storage name for failed backups.
-* Fix: Improved consistency of backup status in logs and history.
-* Fix: "View log" action is now available for successful backups.
-* Fix: Improved consistency and alignment of UI elements across the plugin.
+* Enhancement: Backup history now includes storage name for failed backups.
+* Enhancement: Improved consistency of backup status in logs and history.
+* Enhancement: "View log" action is now available for successful backups.
+* Enhancement: Improved consistency and alignment of UI elements across the plugin.
 * New feature: Added a filter for backup archive types.
 * Enhancement: Improved visibility and naming of in-product support tools.
 
