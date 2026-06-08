@@ -6,7 +6,7 @@ namespace WPMedia\BackWPup\Dependencies\WPMedia\Mixpanel;
 use BackWPup_WPMedia_Mixpanel as WPMedia_Mixpanel;
 
 class Tracking {
-	const HOST = 'mixpanel-tracking-proxy-prod.public-default.live2-k8s-cph3.ingress.k8s.g1i.one';
+	const HOST = 'mixpanel-proxy.group.one';
 
 	/**
 	 * Mixpanel instance

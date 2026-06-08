@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a
+class ComposerStaticInite317687f879a2f45ca8a30958581596e
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -27,10 +27,13 @@ class ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a
         'W' =>
         array (
             'Webmozart\\Assert\\' => 17,
+            'WP\\McpSchema\\' => 13,
+            'WP\\MCP\\' => 7,
             'WPMedia\\Beta\\' => 13,
             'WPMedia\\BackWPup\\Tracking\\' => 26,
             'WPMedia\\BackWPup\\StorageProviders\\' => 34,
             'WPMedia\\BackWPup\\Plugin\\' => 24,
+            'WPMedia\\BackWPup\\MCP\\' => 21,
             'WPMedia\\BackWPup\\Log\\' => 21,
             'WPMedia\\BackWPup\\License\\' => 25,
             'WPMedia\\BackWPup\\Jobs\\' => 22,
@@ -48,6 +51,7 @@ class ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a
             'WPMedia\\BackWPup\\Backup\\' => 24,
             'WPMedia\\BackWPup\\Admin\\' => 23,
             'WPMedia\\BackWPup\\Adapters\\' => 26,
+            'WPMedia\\BackWPup\\Abilities\\' => 27,
             'WPMedia\\BackWPup\\API\\' => 21,
         ),
         'S' =>
@@ -115,6 +119,14 @@ class ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
+        'WP\\McpSchema\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/wordpress/php-mcp-schema/src',
+        ),
+        'WP\\MCP\\' =>
+        array (
+            0 => __DIR__ . '/..' . '/wordpress/mcp-adapter/includes',
+        ),
         'WPMedia\\Beta\\' =>
         array (
             0 => __DIR__ . '/..' . '/wp-media/wp-beta/src',
@@ -130,6 +142,10 @@ class ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a
         'WPMedia\\BackWPup\\Plugin\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Plugin',
+        ),
+        'WPMedia\\BackWPup\\MCP\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/src/MCP',
         ),
         'WPMedia\\BackWPup\\Log\\' =>
         array (
@@ -198,6 +214,10 @@ class ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a
         'WPMedia\\BackWPup\\Adapters\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src/Adapters',
+        ),
+        'WPMedia\\BackWPup\\Abilities\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/src/Abilities',
         ),
         'WPMedia\\BackWPup\\API\\' =>
         array (
@@ -500,10 +520,10 @@ class ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitedfdbd0b8dbec4525b7b937a3242625a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite317687f879a2f45ca8a30958581596e::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite317687f879a2f45ca8a30958581596e::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInite317687f879a2f45ca8a30958581596e::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInite317687f879a2f45ca8a30958581596e::$classMap;
 
         }, null, ClassLoader::class);
     }
