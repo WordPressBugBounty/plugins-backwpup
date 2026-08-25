@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Inpsyde\Restore\Log;
 
-use Webmozart\Assert\Assert;
+use Inpsyde\Assert\Assert;
 use InvalidArgumentException;
 use SplFileObject;
 

@@ -19,7 +19,6 @@ use Inpsyde\Restore\Api\Controller\LanguageController;
 use Inpsyde\Restore\Api\Module\Database\Exception\DatabaseConnectionException;
 use Inpsyde\Restore\Api\Module\Decryption\Exception\DecryptException;
 use Inpsyde\Restore\Api\Module\Registry;
-use Inpsyde\Restore\Infrastructure\Restore\RestoreCleaner;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Webmozart\Assert\Assert;
@@ -33,17 +32,6 @@ class AjaxHandler
      * @var string
      */
     public const EVENT_SOURCE_CONTEXT = 'event_source';
-
-    /**
-     * Allowed values for the restore strategy.
-     *
-     * @var string[]
-     */
-    private const ALLOWED_STRATEGIES = [
-        'complete restore',
-        'db only restore',
-        'files only restore',
-    ];
 
     /**
      * Ajax Hooks.
@@ -174,27 +162,8 @@ class AjaxHandler
 
             // Clean the registry if we have done.
             if ($this->registry->is_restore_finished()) {
-                $this->logger->info('Restore process is finished, registry will be cleared.', [
-                    'project_temp' => (string) $this->registry->project_temp,
-                ]);
-                $projectTemp = (string) $this->registry->project_temp;
                 $this->registry->reset_registry();
-
-                // Send the success response before cleanup so the client receives the
-                // confirmation immediately. Cleanup (deleting extract/, uploads/, etc.)
-                // can take several seconds on large sites and would otherwise cause the
-                // SSE connection to time out before the done event is delivered.
-                $this->handle_json_response($response);
-
-                (new RestoreCleaner($projectTemp, $this->logger))->cleanup();
-
-                return;
             }
-
-            $this->logger->info(
-                'Restore process is not finished yet, registry will not be cleared.',
-                ['project_temp' => (string) $this->registry->project_temp]
-            );
 
             // Sent the response to the client.
             $this->handle_json_response($response);
@@ -210,7 +179,7 @@ class AjaxHandler
      *
      * @return string|bool|string[] The output to send back to the client
      */
-    public function handle_job(string $action) // phpcs:ignore
+    public function handle_job(string $action)
     {
         $response = '';
 
@@ -263,12 +232,10 @@ class AjaxHandler
             );
         }
 
-        $key = is_string($_REQUEST['decryption_key']) ? $_REQUEST['decryption_key'] : '';
+        $key = $_REQUEST['decryption_key'];
 
         if (isset($_REQUEST['encrypted_file_path'])) {
-            $encrypted_file = is_string($_REQUEST['encrypted_file_path'])
-                ? $_REQUEST['encrypted_file_path']
-                : '';
+            $encrypted_file = $_REQUEST['encrypted_file_path'];
         }
 
         if (!$encrypted_file && $this->registry->uploaded_file) {
@@ -298,12 +265,6 @@ class AjaxHandler
         if (!is_string($strategy) || $strategy === '') {
             throw new InvalidArgumentException(
                 __('You have to select one strategy.', 'backwpup')
-            );
-        }
-
-        if (!in_array($strategy, self::ALLOWED_STRATEGIES, true)) {
-            throw new InvalidArgumentException(
-                __('The selected strategy is not valid.', 'backwpup')
             );
         }
 
@@ -387,12 +348,10 @@ class AjaxHandler
         $this->eventSource->setHeaders();
 
         // phpcs:disable
-        $source_file_path = isset($_GET['source_file_path']) && is_string($_GET['source_file_path'])
-            ? $_GET['source_file_path'] : null;
-        $service = isset($_GET['service']) && is_string($_GET['service']) ? $_GET['service'] : null;
+        $source_file_path = $_GET['source_file_path'];
+        $service = $_GET['service'];
         $job_id = filter_var($_GET['jobid'], FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
-        $local_file_path = isset($_GET['local_file_path']) && is_string($_GET['local_file_path'])
-            ? $_GET['local_file_path'] : null;
+        $local_file_path = $_GET['local_file_path'];
         // phpcs:enable
 
         $this->jobController->download_action(
@@ -422,7 +381,9 @@ class AjaxHandler
         // We may pass or not a file path, depends from where the decompression action is started.
         // From the backups page we have a file path but when we upload it we don't.
         // phpcs:disable
-        $file_path = isset($_GET['file_path']) && is_string($_GET['file_path']) ? $_GET['file_path'] : '';
+        $file_path = isset($_GET['file_path'])
+            ? $_GET['file_path'] ?? ''
+            : '';
         // phpcs:enable
 
         $this->jobController->decompress_upload_action($file_path);
@@ -437,7 +398,7 @@ class AjaxHandler
      */
     public function save_migration_action(): bool
     {
-        $old_url = filter_input(INPUT_POST, 'old_url', FILTER_DEFAULT); // phpcs:ignore
+        $old_url = filter_input(INPUT_POST, 'old_url');
         if (!is_string($old_url) || $old_url === '') {
             throw new InvalidArgumentException(
                 __('Please specify the old URL.', 'backwpup')
@@ -451,7 +412,7 @@ class AjaxHandler
             );
         }
 
-        $new_url = filter_input(INPUT_POST, 'new_url', FILTER_DEFAULT); // phpcs:ignore
+        $new_url = filter_input(INPUT_POST, 'new_url');
         if (!is_string($new_url) || $new_url === '') {
             throw new InvalidArgumentException(
                 __('Please specify the new URL.', 'backwpup')
@@ -499,7 +460,7 @@ class AjaxHandler
      *
      * @param string|bool|string[] $response The response data to send back to the client
      */
-    protected function handle_json_response($response): void // phpcs:ignore
+    protected function handle_json_response($response): void
     {
         $context = $_REQUEST['context']
             ?? '';
@@ -534,8 +495,7 @@ class AjaxHandler
         ];
 
         foreach (array_keys($output) as $key) {
-            $param = filter_input(INPUT_POST, $key, FILTER_DEFAULT) // phpcs:ignore
-                ?: filter_input(INPUT_GET, $key, FILTER_DEFAULT); // phpcs:ignore
+            $param = filter_input(INPUT_POST, $key) ?: filter_input(INPUT_GET, $key);
 
             if (is_string($param) && $param !== '') {
                 $output[$key] = $param;
@@ -573,8 +533,8 @@ class AjaxHandler
             $this->registry->reset_registry();
         }
 
-        $context = filter_input(INPUT_POST, 'context', FILTER_DEFAULT) // phpcs:ignore
-            ?: filter_input(INPUT_GET, 'context', FILTER_DEFAULT); // phpcs:ignore
+        $context = filter_input(INPUT_POST, 'context')
+            ?: filter_input(INPUT_GET, 'context');
         if ($context === self::EVENT_SOURCE_CONTEXT) {
             $jsonData = wp_json_encode([
                 'state' => 'error',

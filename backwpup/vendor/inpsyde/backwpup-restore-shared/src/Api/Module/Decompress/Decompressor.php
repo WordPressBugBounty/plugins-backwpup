@@ -31,10 +31,7 @@ use RuntimeException;
 use UnexpectedValueException;
 
 /**
- * @psalm-type TarFile=array{
- *   filename: string, mode: int, uid: int, guid: int, size: int, mtime: int,
- *   typeflag: string, link: string, checksum: int
- * }
+ * @psalm-type TarFile=array{filename: string, mode: int, uid: int, guid: int, size: int, mtime: int, typeflag: string, link: string, checksum: int}
  */
 class Decompressor
 {
@@ -422,7 +419,7 @@ class Decompressor
         $logger = $this->logger;
 
         // `mkdir` emit a `E_WARNING` in case it's not possible to create the directory.
-        set_error_handler( // phpcs:ignore
+        set_error_handler(
             static function () use ($self, $logger): bool {
                 // Restore the previous handler and return, avoid possible loops.
                 restore_error_handler();
@@ -451,8 +448,7 @@ class Decompressor
      * @throws InvalidArgumentException
      * @throws RuntimeException         In case it isn't possible to create the directory
      *
-     * @return string The JSON response if the directory cannot be created for a reason,
-     *                empty string otherwise
+     * @return string The JSON response if the directory cannot be created for a reason, empty string otherwise
      */
     private function create_extract_folder_if_not_exists(): string
     {

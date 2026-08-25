@@ -17,22 +17,6 @@ class BackWPup_Job {
 	public const ENCRYPTION_ASYMMETRIC = 'asymmetric';
 
 	/**
-	 * Double-run guard decision: no live PID, proceed normally.
-	 */
-	public const DOUBLE_RUN_PROCEED = 'run';
-
-	/**
-	 * Double-run guard decision: PID set but running file is stale (>300s), restart.
-	 */
-	public const DOUBLE_RUN_RESTART = 'restart_inactivity';
-
-	/**
-	 * Double-run guard decision: PID set and running file is fresh, another
-	 * invocation is already running; abort this racing invocation.
-	 */
-	public const DOUBLE_RUN_ABORT = 'abort_double_run';
-
-	/**
 	 * Job settings.
 	 *
 	 * @var array
@@ -2059,29 +2043,6 @@ class BackWPup_Job {
 	}
 
 	/**
-	 * Decide what to do about a possible double run / stale running file.
-	 *
-	 * Pure, side-effect-free: reads only `$this->pid` and
-	 * `$this->timestamp_last_update`; "now" is injected for testability.
-	 *
-	 * @param float $now Current time as returned by `microtime( true )`.
-	 *
-	 * @return string One of the `self::DOUBLE_RUN_*` constants.
-	 */
-	private function double_run_decision( float $now ): string {
-		if ( empty( $this->pid ) ) {
-			return self::DOUBLE_RUN_PROCEED;
-		}
-
-		$last_update = $now - $this->timestamp_last_update;
-		if ( 300 < $last_update ) {
-			return self::DOUBLE_RUN_RESTART;
-		}
-
-		return self::DOUBLE_RUN_ABORT;
-	}
-
-	/**
 	 * Run baby run.
 	 */
 	public function run() {
@@ -2113,20 +2074,12 @@ class BackWPup_Job {
 		}
 
 		// Check double running and inactivity.
-		switch ( $this->double_run_decision( microtime( true ) ) ) {
-			case self::DOUBLE_RUN_RESTART:
-				$this->log( __( 'Job restarts due to inactivity for more than 5 minutes.', 'backwpup' ), E_USER_WARNING );
-				break;
-			case self::DOUBLE_RUN_ABORT:
-				// Double-run guard: another invocation is already running (fresh running file
-				// updated < 300s ago). Abort this racing invocation SILENTLY. Do NOT call
-				// BackWPup_Admin::message() (was a misleading false-positive notice, #1175) and
-				// do NOT call log()/write_running_file() — that would overwrite the active
-				// job's live working data. Return before timestamp_script_start / PID re-acquisition.
-				return;
-			case self::DOUBLE_RUN_PROCEED:
-			default:
-				break;
+		$last_update = microtime( true ) - $this->timestamp_last_update;
+		if ( ! empty( $this->pid ) && 300 < $last_update ) {
+			$this->log( __( 'Job restarts due to inactivity for more than 5 minutes.', 'backwpup' ), E_USER_WARNING );
+		} elseif ( ! empty( $this->pid ) ) {
+			BackWPup_Admin::message( __( 'Run aborted because no PID given!', 'backwpup' ), true );
+			return;
 		}
 		// Set timestamp of script start.
 		$this->timestamp_script_start = microtime( true );
@@ -2401,16 +2354,11 @@ class BackWPup_Job {
 				$this->log(
 					sprintf(
 						// translators: %s: folder name.
-						__( 'After restart on folder: %s', 'backwpup' ),
+						__( 'After restrat on folder: %s', 'backwpup' ),
 						$current_folder
 					)
 				);
 			}
-			// Defensive re-index: array_flip() must return a positional offset (0..n) for
-			// array_slice() to resume at the correct location. get_folders_to_backup() already
-			// uses sort(), but array_values() guards against any future change that could
-			// introduce non-sequential keys (e.g. array_unique() or a future asort() call).
-			$folders_to_backup = array_values( $folders_to_backup );
 			// Jump over already done folders.
 			$folders_to_backup_as_key = array_flip( $folders_to_backup );
 			if ( $this->steps_data[ $this->step_working ]['on_folder'] && isset( $folders_to_backup_as_key[ $this->steps_data[ $this->step_working ]['on_folder'] ] ) ) {
@@ -2429,11 +2377,6 @@ class BackWPup_Job {
 				}
 				$this->steps_data[ $this->step_working ]['on_folder'] = $folder;
 				$files_in_folder                                      = $this->get_files_in_folder( $folder );
-				// Defensive re-index: keys must be sequential (0..n) so that array_flip() below
-				// returns a true positional offset for array_slice() to resume correctly.
-				// get_files_in_folder() uses sort(), but array_values() makes this contract
-				// explicit and resilient to future sort changes.
-				$files_in_folder = array_values( $files_in_folder );
 				// Add empty folders.
 				if ( empty( $files_in_folder ) ) {
 					$folder_name_in_archive = trim( ltrim( $this->get_destination_path_replacement( $folder ), '/' ) );
@@ -2822,12 +2765,7 @@ class BackWPup_Job {
 				E_USER_WARNING
 			);
 		}
-		// sort() re-indexes keys to 0..n, which is required so that create_archive()'s
-		// resume slicing (array_flip + array_slice) computes the correct positional offset.
-		// Do NOT use asort() here: it preserves original numeric keys, making array_flip()
-		// return the original key rather than the positional index, causing files to be
-		// skipped or double-counted on every restart.
-		sort( $files );
+		asort( $files );
 
 		return $files;
 	}

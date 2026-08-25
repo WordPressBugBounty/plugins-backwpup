@@ -7,7 +7,6 @@ use WP_HTTP_Response;
 use WP_REST_Server;
 use WPMedia\BackWPup\StorageProviders\CloudProviderManager;
 use WPMedia\BackWPup\API\Rest as RestInterface;
-use WPMedia\BackWPup\API\Capability;
 use Exception;
 use WPMedia\BackWPup\Adapters\BackWPupHelpersAdapter;
 use WPMedia\BackWPup\Adapters\BackWPupAdapter;
@@ -96,7 +95,7 @@ class Rest implements RestInterface {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'authenticate_cloud' ],
-				'permission_callback' => [ $this, 'has_edit_permission' ],
+				'permission_callback' => [ $this, 'has_permission' ],
 			]
 		);
 
@@ -106,7 +105,7 @@ class Rest implements RestInterface {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'delete_auth_cloud' ],
-				'permission_callback' => [ $this, 'has_edit_permission' ],
+				'permission_callback' => [ $this, 'has_permission' ],
 			]
 		);
 
@@ -116,7 +115,7 @@ class Rest implements RestInterface {
 			[
 				'methods'             => 'POST',
 				'callback'            => [ $this, 'cloud_save_and_test' ],
-				'permission_callback' => [ $this, 'has_edit_permission' ],
+				'permission_callback' => [ $this, 'has_permission' ],
 			]
 		);
 
@@ -126,7 +125,7 @@ class Rest implements RestInterface {
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'update_job_storage_options' ],
-				'permission_callback' => [ $this, 'has_edit_permission' ],
+				'permission_callback' => [ $this, 'has_permission' ],
 			]
 		);
 	}
@@ -138,19 +137,6 @@ class Rest implements RestInterface {
 	 */
 	public function has_permission(): bool {
 		return current_user_can( 'backwpup' );
-	}
-
-	/**
-	 * Checks if the current user has permission to create/edit destination/job data.
-	 *
-	 * Gates the mutating destination-management routes (authenticate, delete auth,
-	 * save & test, update storage options) with the granular capability already used
-	 * by every destination's own `edit_form_post_save()` gate.
-	 *
-	 * @return bool True if the user has the required capability, false otherwise.
-	 */
-	public function has_edit_permission(): bool {
-		return current_user_can( Capability::JOBS_EDIT );
 	}
 
 	/**

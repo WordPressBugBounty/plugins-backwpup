@@ -12,18 +12,6 @@ window.BWU.Functions = window.BWU.Functions || {};
   function iife (BWU, $) {
     'use strict'
 
-    /**
-     * Escape HTML-special characters so untrusted text can be safely
-     * concatenated into markup before being handed to jQuery.append().
-     *
-     * @param {string} value The raw text to escape.
-     *
-     * @return {string} The escaped text.
-     */
-    function escapeHtml (value) {
-      return $('<div>').text(value).html()
-    }
-
     BWU.Functions = {
 
       /**
@@ -50,7 +38,7 @@ window.BWU.Functions = window.BWU.Functions || {};
         this.removeMessages()
 
         $container.append(
-          '<p id="bwu_response" class="response response-error">' + escapeHtml(message) +
+          '<p id="bwu_response" class="response response-error">' + message +
           '</p>')
       },
 
@@ -71,7 +59,7 @@ window.BWU.Functions = window.BWU.Functions || {};
         this.removeMessages()
 
         $container.append(
-          '<p id="bwu_response" class="response response-success">' + escapeHtml(message) +
+          '<p id="bwu_response" class="response response-success">' + message +
           '</p>')
       },
 

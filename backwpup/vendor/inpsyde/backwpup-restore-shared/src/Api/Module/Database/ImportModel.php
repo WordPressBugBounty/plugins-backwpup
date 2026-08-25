@@ -77,7 +77,7 @@ final class ImportModel implements ImportInterface
         $this->replacements = 0;
     }
 
-    public function import(): void // phpcs:ignore
+    public function import(): void
     {
         $errors = 0;
         $database = $this->db_connection->database_type();
@@ -94,9 +94,7 @@ final class ImportModel implements ImportInterface
 
         $file = $this->file_import->import_file('sql');
         if (!$file instanceof ImportFileInterface) {
-            throw new \InvalidArgumentException(
-                __('Could not find database file importer', 'backwpup')
-            );
+            throw new \InvalidArgumentException(__('Could not find database file importer', 'backwpup'));
         }
 
         $file->set_import_file($this->registry->dbdumpfile);
@@ -143,8 +141,7 @@ final class ImportModel implements ImportInterface
         $database->query('SET FOREIGN_KEY_CHECKS = 1');
 
         // After we have finished to import, let's update one last time the progress.
-        // We cannot get the 100% in the log because may be the latest query return a value
-        // valuable as false,
+        // We cannot get the 100% in the log because may be the latest query return a value valuable as false,
         // and the progress is not saved the last time.
         $this->registry->dbdumppos = $file->get_position();
         $this->registry->finish_job('db_restore');
@@ -225,7 +222,7 @@ final class ImportModel implements ImportInterface
                 throw new SqlException();
             }
 
-            $fields = array_map(static function (string $field): string {
+            $fields = array_map(static function ($field): string {
                 // Allow hierarchical fields
                 $parts = explode('.', $field);
 
@@ -282,13 +279,7 @@ final class ImportModel implements ImportInterface
 
         // If next character is a comma, then we are moving to the next field
         if ($query[$position] === ',') {
-            preg_match(
-                '/,\s*(?<remaining>.+)/sA',
-                $query,
-                $matches,
-                PREG_OFFSET_CAPTURE,
-                $position
-            );
+            preg_match('/,\s*(?<remaining>.+)/sA', $query, $matches, PREG_OFFSET_CAPTURE, $position);
             $position = $matches['remaining'][1];
             next($fields);
         } elseif ($query[$position] === ')') {
@@ -297,13 +288,7 @@ final class ImportModel implements ImportInterface
 
             // If comma, we have another record
             if ($query[$position] === ',') {
-                preg_match(
-                    '/,\s*(?<remaining>.+)/sA',
-                    $query,
-                    $matches,
-                    PREG_OFFSET_CAPTURE,
-                    (int) $position
-                );
+                preg_match('/,\s*(?<remaining>.+)/sA', $query, $matches, PREG_OFFSET_CAPTURE, (int) $position);
                 $position = $matches['remaining'][1];
                 reset($fields);
             } elseif ($query[$position] === ';') {
@@ -332,38 +317,14 @@ final class ImportModel implements ImportInterface
         array $fields,
         DatabaseInterface $database
     ): string {
-        $matchNonString = preg_match(
-            '/[^\'",)]+(?=,\s*|\))(?<remaining>.+)/sA',
-            $query,
-            $matches,
-            PREG_OFFSET_CAPTURE,
-            $position
-        );
-        $matchShortString = !$matchNonString && preg_match(
-            '/(?<value>([\'"]).?\2)(?=,\s*|\))(?<remaining>.+)/sA',
-            $query,
-            $matches,
-            PREG_OFFSET_CAPTURE,
-            $position
-        );
-        /** @var array<string, string> $matchesLong */
-        $matchesLong = [];
-        $matchLongString = !$matchNonString && !$matchShortString && preg_match(
-            '/(?<value>([\'"]).+?[^\\\]\2)(?=,\s*|\))(?<remaining>.+)/sA',
-            $query,
-            $matchesLong,
-            0,
-            $position
-        );
-
-        if ($matchNonString) {
+        if (preg_match('/[^\'",)]+(?=,\s*|\))(?<remaining>.+)/sA', $query, $matches, PREG_OFFSET_CAPTURE, $position)) {
             // Non-string parameter, which we don't care about
             $position = $matches['remaining'][1];
-        } elseif ($matchShortString) {
+        } elseif (preg_match('/(?<value>([\'"]).?\2)(?=,\s*|\))(?<remaining>.+)/sA', $query, $matches, PREG_OFFSET_CAPTURE, $position)) {
             // One or zero characters in string value
             $position = $matches['remaining'][1];
-        } elseif ($matchLongString) {
-            $value = $matchesLong['value'];
+        } elseif (preg_match('/(?<value>([\'"]).+?[^\\\]\2)(?=,\s*|\))(?<remaining>.+)/sA', $query, $matches, 0, $position)) {
+            $value = $matches['value'];
 
             if (current($fields) === 'guid') {
                 // Skip any guid field
@@ -418,8 +379,7 @@ final class ImportModel implements ImportInterface
         // } (end of serialized array),
         // or character denoting beginning of another serialized value.
         preg_match_all(
-            '/(?<=[\'";{])(?<serialized>s:(?<length>\d+):\\\"(?<value>.+?)\\\";)'
-            . '(?=\'|"|\}|[sidbaO]:)/',
+            '/(?<=[\'";{])(?<serialized>s:(?<length>\d+):\\\"(?<value>.+?)\\\";)(?=\'|"|\}|[sidbaO]:)/',
             $value,
             $matches,
             PREG_SET_ORDER
@@ -432,8 +392,8 @@ final class ImportModel implements ImportInterface
             }
 
             $replaced = str_replace($esc_old_url, $esc_new_url, $match['value'], $count);
-            $urlLengthDiff = \strlen($this->registry->new_url) - \strlen($this->registry->old_url);
-            $length = (int) $match['length'] + $urlLengthDiff * $count;
+            $length = (int) $match['length']
+                + ((\strlen($this->registry->new_url) - \strlen($this->registry->old_url))) * $count;
             $value = str_replace(
                 $match['serialized'],
                 "s:{$length}:\\\"{$replaced}\\\";",
@@ -460,9 +420,7 @@ final class ImportModel implements ImportInterface
      */
     private function save_progress(): void
     {
-        $progress = (int) floor(
-            ($this->registry->dbdumppos['pos'] / $this->registry->dbdumpsize) * 100
-        );
+        $progress = (int) floor(($this->registry->dbdumppos['pos'] / $this->registry->dbdumpsize) * 100);
 
         // Log valid progress and not log the same value multiple times.
         if ($progress > 0 && $progress > $this->registry->migration_progress) {

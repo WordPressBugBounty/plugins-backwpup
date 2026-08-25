@@ -301,13 +301,8 @@ final class TemplateLoader
                 $levelExtractorFactory = $this->container('level_extractor_factory');
 
                 $levelExtractor = $levelExtractorFactory->create();
-                $logFilePath = (string) $this->container('log_file');
-                if (file_exists($logFilePath)) {
-                    $logFile = new SplFileObject($logFilePath);
-                    $bind['errors'] = $levelExtractor->extractError($logFile);
-                } else {
-                    $bind['errors'] = [];
-                }
+                $logFile = new SplFileObject((string) $this->container('log_file'));
+                $bind['errors'] = $levelExtractor->extractError($logFile);
                 break;
 
             default:

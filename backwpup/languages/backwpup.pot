@@ -6,7 +6,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-21 05:48+0000\n"
+"POT-Creation-Date: 2026-06-22 07:30+0000\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-KeywordsList: __;_e;_ex:1,2c;_n:1,2;_n_noop:1,2;_nx:1,2,4c;_nx_noop:1,2,3c;_x:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
 "X-Poedit-SearchPath-0: .\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "BackWPup – WordPress Backup & Restore Plugin"
 msgstr ""
 
-#: backwpup.php:7, inc/class-job.php:609, inc/class-jobtype-dbcheck.php:11, inc/class-jobtype-file.php:12, inc/class-jobtype-wpexp.php:19, inc/class-jobtype-wpplugin.php:11, inc/class-page-backwpup.php:248, inc/class-page-backwpup.php:256, inc/class-page-backwpup.php:260
+#: backwpup.php:7, inc/class-job.php:593, inc/class-jobtype-dbcheck.php:11, inc/class-jobtype-file.php:12, inc/class-jobtype-wpexp.php:19, inc/class-jobtype-wpplugin.php:11, inc/class-page-backwpup.php:248, inc/class-page-backwpup.php:256, inc/class-page-backwpup.php:260
 msgid "https://backwpup.com"
 msgstr ""
 
@@ -534,7 +534,7 @@ msgstr ""
 #. translators: %s: Error message.
 #. translators: %s: path.
 #. translators: %s: folder name.
-#: inc/class-cron.php:137, inc/class-destination-folder.php:190, inc/class-job.php:1582, inc/class-job.php:1835, inc/class-job.php:2819, inc/class-jobtype-file.php:524
+#: inc/class-cron.php:137, inc/class-destination-folder.php:190, inc/class-job.php:1566, inc/class-job.php:1819, inc/class-job.php:2762, inc/class-jobtype-file.php:524
 msgid "Could not open path: %s"
 msgstr ""
 
@@ -1221,7 +1221,7 @@ msgstr ""
 msgid "Folder \"%1$s\" is not writable"
 msgstr ""
 
-#: inc/class-file.php:365
+#: inc/class-file.php:353
 msgid "BackWPup will not backup folders and its sub folders when this file is inside."
 msgstr ""
 
@@ -1238,519 +1238,523 @@ msgid "BackWPup jobs functions"
 msgstr ""
 
 #. translators: %s = job id.
-#: inc/class-job.php:238
+#: inc/class-job.php:222
 msgid "Job with ID %s not exists"
 msgstr ""
 
-#: inc/class-job.php:259
+#: inc/class-job.php:243
 msgid "Can`t write a file to temporary folder"
 msgstr ""
 
 #. translators: %s = job name.
-#: inc/class-job.php:385
+#: inc/class-job.php:369
 msgid "Start of job \"%s\" forbidden!"
 msgstr ""
 
-#: inc/class-job.php:394
+#: inc/class-job.php:378
 msgid "Starting job"
 msgstr ""
 
-#: inc/class-job.php:425
+#: inc/class-job.php:409
 msgid "Job Start"
 msgstr ""
 
-#: inc/class-job.php:450
+#: inc/class-job.php:434
 msgid "Creates manifest file"
 msgstr ""
 
 #. translators: 1: Archive format extension, 2: Filter name.
-#: inc/class-job.php:487
+#: inc/class-job.php:471
 msgid "Archive format \"%1$s\" is not allowed and was changed to .tar. Use the %2$s filter to control available formats."
 msgstr ""
 
-#: inc/class-job.php:499
+#: inc/class-job.php:483
 msgid "Creates archive"
 msgstr ""
 
-#: inc/class-job.php:505
+#: inc/class-job.php:489
 msgid "Encrypts the archive"
 msgstr ""
 
-#: inc/class-job.php:551
+#: inc/class-job.php:535
 msgid "End of Job"
 msgstr ""
 
 #. translators: %1$s = job name, %2$s = date, %3$s = time.
-#: inc/class-job.php:579
+#: inc/class-job.php:563
 msgid "BackWPup log for %1$s from %2$s at %3$s"
 msgstr ""
 
 #. translators: %1$s: plugin name, %2$s: plugin version, %3$s: plugin URL.
-#: inc/class-job.php:602
+#: inc/class-job.php:586
 msgctxt "Plugin name; Plugin Version; plugin url"
 msgid "[INFO] %1$s %2$s; A project of WP Media"
 msgstr ""
 
 #. translators: 1: WordPress version, 2: site URL.
-#: inc/class-job.php:613
+#: inc/class-job.php:597
 msgctxt "WordPress Version; Blog url"
 msgid "[INFO] WordPress %1$s on %2$s"
 msgstr ""
 
-#: inc/class-job.php:617
+#: inc/class-job.php:601
 msgid "Normal"
 msgstr ""
 
-#: inc/class-job.php:620
+#: inc/class-job.php:604
 msgid "Debug"
 msgstr ""
 
-#: inc/class-job.php:623
+#: inc/class-job.php:607
 msgid "(translated)"
 msgstr ""
 
 #. translators: 1: log level, 2: translation flag.
-#: inc/class-job.php:627
+#: inc/class-job.php:611
 msgid "[INFO] Log Level: %1$s %2$s"
 msgstr ""
 
 #. translators: %s: job name.
-#: inc/class-job.php:637
+#: inc/class-job.php:621
 msgid "[INFO] BackWPup job: %1$s"
 msgstr ""
 
 #. translators: 1: user login, 2: user ID.
-#: inc/class-job.php:644
+#: inc/class-job.php:628
 msgid "[INFO] Runs with user: %1$s (%2$d) "
 msgstr ""
 
-#: inc/class-job.php:678
+#: inc/class-job.php:662
 msgid "[INFO] BackWPup no automatic job start configured"
 msgstr ""
 
-#: inc/class-job.php:676
+#: inc/class-job.php:660
 msgid "[INFO] BackWPup job start with link is active"
 msgstr ""
 
-#: inc/class-job.php:661, inc/class-page-backwpup.php:326, inc/class-page-jobs.php:415
+#: inc/class-job.php:645, inc/class-page-backwpup.php:326, inc/class-page-jobs.php:415
 msgid "Not scheduled!"
 msgstr ""
 
-#: inc/class-job.php:670
+#: inc/class-job.php:654
 msgid "[INFO] Cron: %1$s; Next: %2$s "
 msgstr ""
 
-#: inc/class-job.php:688
+#: inc/class-job.php:672
 msgid "[INFO] BackWPup job started form commandline interface"
 msgstr ""
 
-#: inc/class-job.php:686
+#: inc/class-job.php:670
 msgid "[INFO] BackWPup job started from external url"
 msgstr ""
 
-#: inc/class-job.php:684
+#: inc/class-job.php:668
 msgid "[INFO] BackWPup job started manually"
 msgstr ""
 
-#: inc/class-job.php:682
+#: inc/class-job.php:666
 msgid "[INFO] BackWPup job started from wp-cron"
 msgstr ""
 
-#: inc/class-job.php:700
+#: inc/class-job.php:684
 msgid "[INFO] PHP ver.:"
 msgstr ""
 
 #. translators: %d: time in seconds.
-#: inc/class-job.php:706
+#: inc/class-job.php:690
 msgid "[INFO] Maximum PHP script execution time is %1$d seconds"
 msgstr ""
 
 #. translators: %d: time in seconds.
-#: inc/class-job.php:714
+#: inc/class-job.php:698
 msgid "[INFO] Script restart time is configured to %1$d seconds"
 msgstr ""
 
 #. translators: %s: MySQL version.
-#: inc/class-job.php:729
+#: inc/class-job.php:713
 msgid "[INFO] MySQL ver.: %s"
 msgstr ""
 
 #. translators: %s: web server info.
-#: inc/class-job.php:736
+#: inc/class-job.php:720
 msgid "[INFO] Web Server: %s"
 msgstr ""
 
 #. translators: 1: cURL version, 2: SSL version.
-#: inc/class-job.php:744
+#: inc/class-job.php:728
 msgid "[INFO] curl ver.: %1$s; %2$s"
 msgstr ""
 
 #. translators: %s: temporary folder path.
-#: inc/class-job.php:751
+#: inc/class-job.php:735
 msgid "[INFO] Temp folder is: %s"
 msgstr ""
 
 #. translators: %s: log file name.
-#: inc/class-job.php:762
+#: inc/class-job.php:746
 msgid "[INFO] Logfile is: %s"
 msgstr ""
 
 #. translators: %s: backup type.
-#: inc/class-job.php:784
+#: inc/class-job.php:768
 msgid "[INFO] Backup type is: %s"
 msgstr ""
 
-#: inc/class-job.php:778
+#: inc/class-job.php:762
 msgid "[INFO] Backup file is located at: %s"
 msgstr ""
 
-#: inc/class-job.php:798
+#: inc/class-job.php:782
 msgid "Could not write log file"
 msgstr ""
 
-#: inc/class-job.php:812
+#: inc/class-job.php:796
 msgid "No destination correctly defined for backup! Please correct job settings."
 msgstr ""
 
-#: inc/class-job.php:995
+#: inc/class-job.php:979
 msgid "Cannot initialize WP Filesystem. Job will be aborted."
 msgstr ""
 
-#: inc/class-job.php:1006
+#: inc/class-job.php:990
 msgid "Cannot write progress to working file. Job will be aborted."
 msgstr ""
 
-#: inc/class-job.php:1084, inc/class-page-jobs.php:1176
+#: inc/class-job.php:1068, inc/class-page-jobs.php:1176
 msgid "WARNING:"
 msgstr ""
 
-#: inc/class-job.php:1094, inc/class-page-jobs.php:1173
+#: inc/class-job.php:1078, inc/class-page-jobs.php:1173
 msgid "ERROR:"
 msgstr ""
 
-#: inc/class-job.php:1099
+#: inc/class-job.php:1083
 msgid "DEPRECATED:"
 msgstr ""
 
-#: inc/class-job.php:1103
+#: inc/class-job.php:1087
 msgid "STRICT NOTICE:"
 msgstr ""
 
-#: inc/class-job.php:1109
+#: inc/class-job.php:1093
 msgid "RECOVERABLE ERROR:"
 msgstr ""
 
 #. translators: %d: number of runs before debug log mode will be set to normal.
-#: inc/class-job.php:1316
+#: inc/class-job.php:1300
 msgid "Resetting log level from debug to normal mode after %d more executions."
 msgstr ""
 
-#: inc/class-job.php:1310
+#: inc/class-job.php:1294
 msgid "Resetting log level from debug to normal mode."
 msgstr ""
 
-#: inc/class-job.php:1552
+#: inc/class-job.php:1536
 msgid "Backup aborted!"
 msgstr ""
 
 #. translators: %d: number of log files.
-#: inc/class-job.php:1606
+#: inc/class-job.php:1590
 msgid "%d old log deleted"
 msgid_plural "%d old logs deleted"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: runtime in seconds.
-#: inc/class-job.php:1649
+#: inc/class-job.php:1633
 msgid "Job done in %s seconds."
 msgstr ""
 
-#: inc/class-job.php:1637
+#: inc/class-job.php:1621
 msgid "Job finished with warnings in %s seconds. Please resolve them for correct execution."
 msgstr ""
 
-#: inc/class-job.php:1625, inc/class-page-jobs.php:1173
+#: inc/class-job.php:1609, inc/class-page-jobs.php:1173
 msgid "Job has ended with errors in %s seconds. You must resolve the errors for correct execution."
 msgstr ""
 
-#: inc/class-job.php:1716
+#: inc/class-job.php:1700
 msgid "SUCCESSFUL"
 msgstr ""
 
-#: inc/class-job.php:1718
+#: inc/class-job.php:1702
 msgid "WARNING"
 msgstr ""
 
-#: inc/class-job.php:1721
+#: inc/class-job.php:1705
 msgid "ERROR"
 msgstr ""
 
 #. translators: %1$s = Date, %2$s = job name, %3$s = job status.
-#: inc/class-job.php:1726
+#: inc/class-job.php:1710
 msgid "[%3$s] BackWPup log %1$s: %2$s"
 msgstr ""
 
-#: inc/class-job.php:1894
+#: inc/class-job.php:1878
 msgid "Restart after getting signal."
 msgstr ""
 
-#: inc/class-job.php:1889
+#: inc/class-job.php:1873
 msgid "Restart after %1$d seconds."
 msgstr ""
 
-#: inc/class-job.php:2111
+#: inc/class-job.php:2072
 msgid "Backup can't be started because it is not created!"
 msgstr ""
 
-#: inc/class-job.php:2118
+#: inc/class-job.php:2081
+msgid "Run aborted because no PID given!"
+msgstr ""
+
+#: inc/class-job.php:2079
 msgid "Job restarts due to inactivity for more than 5 minutes."
 msgstr ""
 
-#: inc/class-job.php:2248
+#: inc/class-job.php:2201
 msgid "Step aborted: too many attempts!"
 msgstr ""
 
 #. translators: %d: attempt number.
-#: inc/class-job.php:2342
+#: inc/class-job.php:2295
 msgid "%d. Trying to create backup archive &hellip;"
 msgstr ""
 
 #. translators: %s: archive compression method.
-#: inc/class-job.php:2357
+#: inc/class-job.php:2310
 msgctxt "Archive compression method"
 msgid "Compressing files as %s. Please be patient, this may take a moment."
 msgstr ""
 
-#: inc/class-job.php:2371
+#: inc/class-job.php:2324
 msgid "Adding Extra files to Archive"
 msgstr ""
 
-#: inc/class-job.php:2387, inc/class-job.php:2486
+#: inc/class-job.php:2340, inc/class-job.php:2429
 msgid "Cannot create backup archive correctly. Aborting creation."
 msgstr ""
 
 #. translators: %s: folder name.
-#: inc/class-job.php:2404
-msgid "After restart on folder: %s"
+#: inc/class-job.php:2357
+msgid "After restrat on folder: %s"
 msgstr ""
 
 #. translators: %s: folder path.
-#: inc/class-job.php:2425
+#: inc/class-job.php:2373
 msgid "Archiving Folder: %s"
 msgstr ""
 
-#: inc/class-job.php:2500
+#: inc/class-job.php:2443
 msgid "Backup archive created."
 msgstr ""
 
 #. translators: %s: archive size.
-#: inc/class-job.php:2525
+#: inc/class-job.php:2468
 msgid "Archive size is %s."
 msgstr ""
 
-#: inc/class-job.php:2514
+#: inc/class-job.php:2457
 msgid "The Backup archive will be too large for file operations with this PHP Version. You might want to consider splitting the backup job in multiple jobs with less files each."
 msgstr ""
 
 #. translators: 1: number of files, 2: total size.
-#: inc/class-job.php:2535
+#: inc/class-job.php:2478
 msgid "%1$d Files with %2$s in Archive."
 msgstr ""
 
-#: inc/class-job.php:2579
+#: inc/class-job.php:2522
 msgid "No encryption key was provided. Aborting encryption."
 msgstr ""
 
 #. translators: %d: attempt number.
-#: inc/class-job.php:2590
+#: inc/class-job.php:2533
 msgid "%d. Trying to encrypt archive &hellip;"
 msgstr ""
 
-#: inc/class-job.php:2600
+#: inc/class-job.php:2543
 msgid "Cannot open the archive for reading. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:2608
+#: inc/class-job.php:2551
 msgid "Cannot write the encrypted archive. Aborting encryption."
 msgstr ""
 
-#: inc/class-job.php:2629
+#: inc/class-job.php:2572
 msgid "Could not initialize encryptor."
 msgstr ""
 
 #. translators: %s: encrypted data size.
-#: inc/class-job.php:2657
+#: inc/class-job.php:2600
 msgid "Encrypted %s of data."
 msgstr ""
 
-#: inc/class-job.php:2665
+#: inc/class-job.php:2608
 msgid "Unable to delete unencrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2673
+#: inc/class-job.php:2616
 msgid "Unable to rename encrypted archive."
 msgstr ""
 
-#: inc/class-job.php:2679
+#: inc/class-job.php:2622
 msgid "Archive has been successfully encrypted."
 msgstr ""
 
 #. translators: %s: folder path.
-#: inc/class-job.php:2727
+#: inc/class-job.php:2670
 msgctxt "Folder name"
 msgid "Folder %s does not exist"
 msgstr ""
 
 #. translators: %s: folder path.
-#: inc/class-job.php:2740
+#: inc/class-job.php:2683
 msgctxt "Folder name"
 msgid "Folder %s is not readable"
 msgstr ""
 
 #. translators: %s: file path and size.
-#: inc/class-job.php:2800
+#: inc/class-job.php:2743
 msgid "File size of “%s” cannot be retrieved. File might be too large and will not be added to queue."
 msgstr ""
 
-#: inc/class-job.php:2789
+#: inc/class-job.php:2732
 msgid "File \"%s\" is not readable!"
 msgstr ""
 
-#: inc/class-job.php:2780
+#: inc/class-job.php:2723
 msgid "Link \"%s\" not following."
 msgstr ""
 
 #. translators: %d: attempt number.
-#: inc/class-job.php:2904
+#: inc/class-job.php:2842
 msgid "%d. Trying to generate a manifest file&#160;&hellip;"
 msgstr ""
 
-#: inc/class-job.php:2977
+#: inc/class-job.php:2915
 msgid "You may have noticed the manifest.json file in this archive."
 msgstr ""
 
-#: inc/class-job.php:2978
+#: inc/class-job.php:2916
 msgid "manifest.json might be needed for later restoring a backup from this archive."
 msgstr ""
 
-#: inc/class-job.php:2982
+#: inc/class-job.php:2920
 msgid "Please leave manifest.json untouched and in place. Otherwise it is safe to be ignored."
 msgstr ""
 
 #. translators: %s: file size.
-#: inc/class-job.php:2998
+#: inc/class-job.php:2936
 msgid "Added manifest.json file with %1$s to backup file list."
 msgstr ""
 
-#: inc/class-job.php:3027
+#: inc/class-job.php:2965
 msgid "Wrong BackWPup JobID"
 msgstr ""
 
-#: inc/class-job.php:3040
+#: inc/class-job.php:2978
 msgid "A BackWPup job is already running"
 msgstr ""
 
-#: inc/class-job.php:3194
+#: inc/class-job.php:3132
 msgctxt "SIGHUP: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Hangup detected on controlling terminal or death of controlling process"
 msgstr ""
 
-#: inc/class-job.php:3202
+#: inc/class-job.php:3140
 msgctxt "SIGINT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Interrupt from keyboard"
 msgstr ""
 
-#: inc/class-job.php:3210
+#: inc/class-job.php:3148
 msgctxt "SIGQUIT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Quit from keyboard"
 msgstr ""
 
-#: inc/class-job.php:3218
+#: inc/class-job.php:3156
 msgctxt "SIGILL: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Illegal Instruction"
 msgstr ""
 
-#: inc/class-job.php:3226
+#: inc/class-job.php:3164
 msgctxt "SIGABRT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Abort signal from abort(3)"
 msgstr ""
 
-#: inc/class-job.php:3234
+#: inc/class-job.php:3172
 msgctxt "SIGBUS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bus error (bad memory access)"
 msgstr ""
 
-#: inc/class-job.php:3242
+#: inc/class-job.php:3180
 msgctxt "SIGFPE: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Floating point exception"
 msgstr ""
 
-#: inc/class-job.php:3250
+#: inc/class-job.php:3188
 msgctxt "SIGSEGV: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Invalid memory reference"
 msgstr ""
 
-#: inc/class-job.php:3258
+#: inc/class-job.php:3196
 msgctxt "SIGTERM: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Termination signal"
 msgstr ""
 
-#: inc/class-job.php:3266
+#: inc/class-job.php:3204
 msgctxt "SIGSTKFLT: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Stack fault on coprocessor"
 msgstr ""
 
-#: inc/class-job.php:3274
+#: inc/class-job.php:3212
 msgctxt "SIGUSR1: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 1"
 msgstr ""
 
-#: inc/class-job.php:3282
+#: inc/class-job.php:3220
 msgctxt "SIGUSR2: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "User-defined signal 2"
 msgstr ""
 
-#: inc/class-job.php:3290
+#: inc/class-job.php:3228
 msgctxt "SIGURG: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Urgent condition on socket"
 msgstr ""
 
-#: inc/class-job.php:3298
+#: inc/class-job.php:3236
 msgctxt "SIGXCPU: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "CPU time limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:3306
+#: inc/class-job.php:3244
 msgctxt "SIGXFSZ: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "File size limit exceeded"
 msgstr ""
 
-#: inc/class-job.php:3314
+#: inc/class-job.php:3252
 msgctxt "SIGPWR: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Power failure"
 msgstr ""
 
-#: inc/class-job.php:3322
+#: inc/class-job.php:3260
 msgctxt "SIGSYS: Please see http://man7.org/linux/man-pages/man7/signal.7.html for details"
 msgid "Bad argument to routine"
 msgstr ""
 
 #. translators: 1: signal name, 2: signal description.
-#: inc/class-job.php:3336
+#: inc/class-job.php:3274
 msgid "Signal \"%1$s\" (%2$s) is sent to script!"
 msgstr ""
 
 #. translators: %s: system error.
-#: inc/class-job.php:3380, inc/class-job.php:3400
+#: inc/class-job.php:3318, inc/class-job.php:3338
 msgid "System: %s"
 msgstr ""
 
 #. translators: 1: exception class, 2: exception message.
-#: inc/class-job.php:3420
+#: inc/class-job.php:3358
 msgid "Exception caught in %1$s: %2$s"
 msgstr ""
 
-#: inc/class-job.php:3624, inc/class-page-jobs.php:567
+#: inc/class-job.php:3562, inc/class-page-jobs.php:567
 msgid "Copy of"
 msgstr ""
 
@@ -2124,7 +2128,7 @@ msgstr ""
 msgid "Files & Database"
 msgstr ""
 
-#: inc/class-message-box.php:101, views/notice/legacy_disabled_tasks.php:7, views/notice/notice_5_2.php:7, views/notice/notice_5_2_2.php:7, views/notice/notice_data_corrupted.php:7, views/notice/notice_missing_curl.php:7, views/notice/notice_tracking_opt_in.php:7, views/notice/notice_upgrade_to_pro.php:40, views/notice/stale_restore_files.php:21
+#: inc/class-message-box.php:101, views/notice/legacy_disabled_tasks.php:7, views/notice/notice_5_2.php:7, views/notice/notice_5_2_2.php:7, views/notice/notice_data_corrupted.php:7, views/notice/notice_missing_curl.php:7, views/notice/notice_tracking_opt_in.php:7, views/notice/notice_upgrade_to_pro.php:40
 msgid "Dismiss"
 msgstr ""
 
@@ -6062,18 +6066,6 @@ msgstr ""
 
 #: views/notice/restore_feature_information.php:10
 msgid " here !"
-msgstr ""
-
-#: views/notice/stale_restore_files.php:17
-msgid "Security Warning: Sensitive restore files detected"
-msgstr ""
-
-#: views/notice/stale_restore_files.php:26
-msgid "BackWPup detected leftover files from a previous restore operation in the restore working directory. These files may contain your database credentials in plain text. It is strongly recommended to delete them immediately."
-msgstr ""
-
-#: views/notice/stale_restore_files.php:40
-msgid "Delete restore files"
 msgstr ""
 
 #: views/notice/wordpress.php:6
